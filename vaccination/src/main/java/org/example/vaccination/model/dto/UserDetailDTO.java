@@ -1,6 +1,5 @@
 package org.example.vaccination.model.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import org.example.vaccination.model.User;
 
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ public record UserDetailDTO(
         Integer number,
         String district,
         String city,
-        String fu
+        String state
 ) {
     public UserDetailDTO(User user) {
         this(
@@ -26,7 +25,7 @@ public record UserDetailDTO(
                 user.getNumber(),
                 user.getDistrict(),
                 user.getCity(),
-                user.getFu().name()
+                user.getState().name()
         );
     }
 }

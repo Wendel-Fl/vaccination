@@ -22,6 +22,6 @@ public record UserDTO(
         @NotBlank
         String city,
         @NotNull
-        State fu
+        State state
 ) {
 }

@@ -43,7 +43,7 @@ public class User {
     private String city;
 
     @Column(name = "uf")
-    private State fu;
+    private State state;
 
     public User(UserDTO userDTO) {
         this.name = userDTO.name();
@@ -53,6 +53,6 @@ public class User {
         this.number = userDTO.number();
         this.district = userDTO.district();
         this.city = userDTO.city();
-        this.fu = State.valueOf(userDTO.fu().getAcronym());
+        this.state = State.valueOf(userDTO.state().getAcronym());
     }
 }
