@@ -50,6 +50,13 @@ public class UserController {
         return ResponseEntity.created(uri).body(new UserDetailDTO(user));
     }
 
+    @PutMapping(path = "/update")
+    @Transactional
+    public ResponseEntity<UserDetailDTO> updateUser(UserDetailDTO userDetailDTO) {
+        User user = userService.updateUser(userDetailDTO);
+        return ResponseEntity.ok(new UserDetailDTO(user));
+    }
+
     @DeleteMapping(path = "/delete/{id}")
     @Transactional
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
