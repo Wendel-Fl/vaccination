@@ -34,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping(path = "/register")
+    @PostMapping(path = "/create")
     @Transactional
     public ResponseEntity<UserDetailDTO> createUser(
             @RequestBody @Valid UserDTO userDTO,
