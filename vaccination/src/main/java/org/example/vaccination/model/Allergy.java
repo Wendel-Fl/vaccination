@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.vaccination.model.dto.AllergyDTO;
+import org.example.vaccination.model.dto.AllergyDetailDTO;
 
 @Getter
 @Setter
@@ -20,4 +22,14 @@ public class Allergy {
 
     @Column(name = "nome")
     private String name;
+
+    public Allergy(AllergyDTO allergyDTO) {
+        this.name = allergyDTO.name();
+    }
+
+    public void updateInfo(AllergyDetailDTO allergyDetailDTO) {
+        if (allergyDetailDTO.name() != null) {
+            this.name = allergyDetailDTO.name();
+        }
+    }
 }
