@@ -1,6 +1,7 @@
 package org.example.vaccination.service;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Allergy;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
@@ -11,10 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AllergyService {
 
-    @Autowired
     private final AllergyRepository allergyRepository;
 
     public Allergy getAllergyById(Long id) {

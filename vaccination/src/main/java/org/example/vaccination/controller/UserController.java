@@ -1,12 +1,11 @@
 package org.example.vaccination.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.User;
 import org.example.vaccination.model.dto.UserDTO;
 import org.example.vaccination.model.dto.UserDetailDTO;
 import org.example.vaccination.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "user")
 public class UserController {
 
-    @Autowired
     private final UserService userService;
 
     @GetMapping(path = "/{id}")
@@ -34,7 +32,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping(path = "/create")
+    @PostMapping
     @Transactional
     public ResponseEntity<UserDetailDTO> createUser(
             @RequestBody @Valid UserDTO userDTO,
@@ -50,14 +48,14 @@ public class UserController {
         return ResponseEntity.created(uri).body(new UserDetailDTO(user));
     }
 
-    @PutMapping(path = "/update")
+    @PutMapping
     @Transactional
     public ResponseEntity<UserDetailDTO> updateUser(UserDetailDTO userDetailDTO) {
         User user = userService.updateUser(userDetailDTO);
         return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "/{id}")
     @Transactional
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
