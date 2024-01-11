@@ -21,8 +21,12 @@ public class UserService {
         return userRepository.getReferenceById(id);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDetailDTO> getAllUsers() {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(UserDetailDTO::new)
+                .toList();
     }
 
     public User createUser(UserDTO userDTO) {
