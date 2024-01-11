@@ -21,8 +21,12 @@ public class AllergyService {
         return allergyRepository.getReferenceById(id);
     }
 
-    public List<Allergy> getAllAllergies() {
-        return allergyRepository.findAll();
+    public List<AllergyDetailDTO> getAllAllergies() {
+        return allergyRepository
+                .findAll()
+                .stream()
+                .map(AllergyDetailDTO::new)
+                .toList();
     }
 
     public Allergy createAllergy(AllergyDTO allergyDTO) {

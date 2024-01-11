@@ -22,15 +22,15 @@ public class AllergyController {
     @Autowired
     private final AllergyService allergyService;
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<AllergyDetailDTO> getAllergy(@PathVariable Long id) {
         Allergy allergy = allergyService.getAllergyById(id);
         return ResponseEntity.ok(new AllergyDetailDTO(allergy));
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Allergy>> getAllAllergies() {
-        List<Allergy> allergies = allergyService.getAllAllergies();
+    public ResponseEntity<List<AllergyDetailDTO>> getAllAllergies() {
+        List<AllergyDetailDTO> allergies = allergyService.getAllAllergies();
         return ResponseEntity.ok(allergies);
     }
 
@@ -43,7 +43,7 @@ public class AllergyController {
         Allergy allergy = allergyService.createAllergy(allergyDTO);
 
         var uri = uriBuilder
-                .path("allergy/{id}")
+                .path("/allergy/{id}")
                 .buildAndExpand(allergy.getId())
                 .toUri();
 
@@ -57,7 +57,7 @@ public class AllergyController {
         return ResponseEntity.ok(new AllergyDetailDTO(allergy));
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "delete/{id}")
     @Transactional
     public ResponseEntity<Allergy> deleteAllergy(@PathVariable Long id) {
         allergyService.deleteAllergy(id);
