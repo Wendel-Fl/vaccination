@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.vaccination.model.dto.ScheduleDTO;
+import org.example.vaccination.model.dto.ScheduleDetailDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,4 +38,34 @@ public class Schedule {
 
     @Column(name = "observacoes")
     private String notes;
+
+    public Schedule(ScheduleDTO scheduleDTO) {
+        this.date = scheduleDTO.date();
+        this.hour = scheduleDTO.hour();
+        this.status = Status.valueOf(scheduleDTO.status().getName());
+        this.statusDate = scheduleDTO.statusDate();
+        this.notes = scheduleDTO.notes();
+    }
+
+    public void updateInfo(ScheduleDetailDTO scheduleDetailDTO) {
+        if (scheduleDetailDTO.date() != null) {
+            this.date = scheduleDetailDTO.date();
+        }
+
+        if (scheduleDetailDTO.hour() != null) {
+            this.hour = scheduleDetailDTO.hour();
+        }
+
+        if (scheduleDetailDTO.status() != null) {
+            this.status = Status.valueOf(scheduleDetailDTO.status().getName());
+        }
+
+        if (scheduleDetailDTO.statusDate() != null) {
+            this.statusDate = scheduleDetailDTO.statusDate();
+        }
+
+        if (scheduleDetailDTO.notes() != null) {
+            this.notes = scheduleDetailDTO.notes();
+        }
+    }
 }
