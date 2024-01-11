@@ -5,6 +5,8 @@ import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { InputsModule } from './inputs/inputs.module';
 import { TableModule } from './table/table.module';
+import { RouterModule } from '@angular/router';
+import { ContainersModule } from './containers/containers.module';
 
 
 
@@ -17,14 +19,17 @@ import { TableModule } from './table/table.module';
   imports: [
     CommonModule,
     InputsModule,
-    TableModule
+    TableModule,
+    ContainersModule,
+    RouterModule
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
     InputsModule,
-    TableModule
+    TableModule,
+    ContainersModule
   ]
 })
 export class ComponentsModule { }
