@@ -50,7 +50,9 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<UserDetailDTO> updateUser(UserDetailDTO userDetailDTO) {
+    public ResponseEntity<UserDetailDTO> updateUser(
+            @RequestBody @Valid UserDetailDTO userDetailDTO
+    ) {
         User user = userService.updateUser(userDetailDTO);
         return ResponseEntity.ok(new UserDetailDTO(user));
     }

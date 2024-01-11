@@ -50,7 +50,9 @@ public class AllergyController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<AllergyDetailDTO> updateAllergy(AllergyDetailDTO allergyDetailDTO) {
+    public ResponseEntity<AllergyDetailDTO> updateAllergy(
+            @RequestBody @Valid AllergyDetailDTO allergyDetailDTO
+    ) {
         Allergy allergy = allergyService.updateAllergy(allergyDetailDTO);
         return ResponseEntity.ok(new AllergyDetailDTO(allergy));
     }

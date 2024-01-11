@@ -15,7 +15,7 @@ public class VaccinationService {
 
     private final VaccinationRepository vaccinationRepository;
 
-    public Vaccination getVaccine(Long id) {
+    public Vaccination getVaccineById(Long id) {
         return vaccinationRepository.getReferenceById(id);
     }
 

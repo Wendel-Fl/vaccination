@@ -6,7 +6,6 @@ import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 import org.example.vaccination.service.VaccinationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ public class VaccinationController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<VaccinationDetailDTO> getVaccine(@PathVariable Long id) {
-        Vaccination vaccination = vaccinationService.getVaccine(id);
+        Vaccination vaccination = vaccinationService.getVaccineById(id);
         return ResponseEntity.ok(new VaccinationDetailDTO(vaccination));
     }
 
@@ -51,7 +50,9 @@ public class VaccinationController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<VaccinationDetailDTO> updateVaccination(VaccinationDetailDTO vaccinationDetailDTO) {
+    public ResponseEntity<VaccinationDetailDTO> updateVaccination(
+            @RequestBody @Valid VaccinationDetailDTO vaccinationDetailDTO
+    ) {
         Vaccination vaccination = vaccinationService.updateVaccine(vaccinationDetailDTO);
         return ResponseEntity.ok(new VaccinationDetailDTO(vaccination));
     }
