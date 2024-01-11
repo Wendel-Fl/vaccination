@@ -9,19 +9,26 @@ import java.time.LocalDate;
 public record UserDTO(
         @NotBlank
         String name,
-        @NotBlank
+
+        @NotNull
         LocalDate dateOfBirth,
-        @NotBlank
+
+        @NotNull
         Character gender,
+
         @NotBlank
         String publicPlace,
-        @NotBlank
+
+        @NotNull
         Integer number,
+
         @NotBlank
         String district,
+
         @NotBlank
         String city,
+
         @NotNull
-        State fu
+        State state
 ) {
 }

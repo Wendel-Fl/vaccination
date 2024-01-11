@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDetailDTO>> getAllUsers() {
+        List<UserDetailDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping(path = "/register")
+    @PostMapping(path = "/create")
     @Transactional
     public ResponseEntity<UserDetailDTO> createUser(
             @RequestBody @Valid UserDTO userDTO,
@@ -48,6 +48,13 @@ public class UserController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(new UserDetailDTO(user));
+    }
+
+    @PutMapping(path = "/update")
+    @Transactional
+    public ResponseEntity<UserDetailDTO> updateUser(UserDetailDTO userDetailDTO) {
+        User user = userService.updateUser(userDetailDTO);
+        return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
     @DeleteMapping(path = "/delete/{id}")
