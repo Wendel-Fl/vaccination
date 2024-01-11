@@ -1,20 +1,18 @@
 package org.example.vaccination.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.User;
 import org.example.vaccination.model.dto.UserDTO;
 import org.example.vaccination.model.dto.UserDetailDTO;
 import org.example.vaccination.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
     private final UserRepository userRepository;
 
     public User getUserById(Long id) {

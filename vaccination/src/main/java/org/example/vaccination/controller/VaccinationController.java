@@ -1,12 +1,11 @@
 package org.example.vaccination.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 import org.example.vaccination.service.VaccinationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +13,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "vaccination")
 public class VaccinationController {
 
-    @Autowired
     private final VaccinationService vaccinationService;
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<VaccinationDetailDTO> getVaccine(@PathVariable Long id) {
-        Vaccination vaccination = vaccinationService.getVaccine(id);
+        Vaccination vaccination = vaccinationService.getVaccineById(id);
         return ResponseEntity.ok(new VaccinationDetailDTO(vaccination));
     }
 
@@ -34,7 +32,7 @@ public class VaccinationController {
         return ResponseEntity.ok(vaccines);
     }
 
-    @PostMapping(path = "/create")
+    @PostMapping
     @Transactional
     public ResponseEntity<VaccinationDetailDTO> createVaccination(
             @RequestBody @Valid VaccinationDTO vaccinationDTO,
@@ -50,14 +48,16 @@ public class VaccinationController {
         return ResponseEntity.created(uri).body(new VaccinationDetailDTO(vaccination));
     }
 
-    @PutMapping(path = "/update")
+    @PutMapping
     @Transactional
-    public ResponseEntity<VaccinationDetailDTO> updateVaccination(VaccinationDetailDTO vaccinationDetailDTO) {
+    public ResponseEntity<VaccinationDetailDTO> updateVaccination(
+            @RequestBody @Valid VaccinationDetailDTO vaccinationDetailDTO
+    ) {
         Vaccination vaccination = vaccinationService.updateVaccine(vaccinationDetailDTO);
         return ResponseEntity.ok(new VaccinationDetailDTO(vaccination));
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "/{id}")
     @Transactional
     public ResponseEntity<VaccinationDetailDTO> deleteVaccination(
             @PathVariable Long id

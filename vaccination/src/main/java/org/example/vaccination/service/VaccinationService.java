@@ -1,23 +1,21 @@
 package org.example.vaccination.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 import org.example.vaccination.repository.VaccinationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VaccinationService {
 
-    @Autowired
     private final VaccinationRepository vaccinationRepository;
 
-    public Vaccination getVaccine(Long id) {
+    public Vaccination getVaccineById(Long id) {
         return vaccinationRepository.getReferenceById(id);
     }
 
