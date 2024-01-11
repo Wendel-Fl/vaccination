@@ -1,0 +1,11 @@
+main {
+    width: 100%;
+    height: 76%;
+    display: flex;
+    vac-sidebar {
+        width: 16%;
+    }
+    > router-outlet {
+        width: 84%;
+    }
+}
