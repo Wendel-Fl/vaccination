@@ -1,11 +1,18 @@
 main {
     width: 100%;
-    height: 76%;
+    height: 86%;
     display: flex;
     vac-sidebar {
         width: 16%;
     }
-    > router-outlet {
+    > div {
         width: 84%;
+        height: 100%;
+        padding: 24px;
+        background-color: #c4c4c4;
+        > router-outlet {
+            width: 100%;
+            height: 100%;
+        }
     }
 }
