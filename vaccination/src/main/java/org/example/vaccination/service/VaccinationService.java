@@ -13,9 +13,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VaccinationService {
 
+    private static final String VACCINATION_NOT_FOUND = "Vaccination not found";
+
     private final VaccinationRepository vaccinationRepository;
 
     public Vaccination getVaccineById(Long id) {
+        boolean exists = vaccinationRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(VACCINATION_NOT_FOUND);
+        }
+
         return vaccinationRepository.getReferenceById(id);
     }
 
@@ -33,12 +41,27 @@ public class VaccinationService {
     }
 
     public Vaccination updateVaccine(VaccinationDetailDTO vaccinationDetailDTO) {
-        Vaccination vaccination = vaccinationRepository.getReferenceById(vaccinationDetailDTO.id());
+        boolean exists = vaccinationRepository.existsById(vaccinationDetailDTO.id());
+
+        if (!exists) {
+            throw new RuntimeException(VACCINATION_NOT_FOUND);
+        }
+
+        Vaccination vaccination = vaccinationRepository
+                .getReferenceById(vaccinationDetailDTO.id());
+
         vaccination.updateVaccine(vaccinationDetailDTO);
         return vaccination;
     }
 
     public void deleteVaccine(Long id) {
+
+        boolean exists = vaccinationRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(VACCINATION_NOT_FOUND);
+        }
+
         vaccinationRepository.deleteById(id);
     }
 }

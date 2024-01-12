@@ -15,9 +15,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AllergyService {
 
+    private static final String ALLERGY_NOT_FOUND = "Allergy not found";
+
     private final AllergyRepository allergyRepository;
 
     public Allergy getAllergyById(Long id) {
+        boolean exists = allergyRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(ALLERGY_NOT_FOUND);
+        }
+
         return allergyRepository.getReferenceById(id);
     }
 
@@ -35,12 +43,25 @@ public class AllergyService {
     }
 
     public Allergy updateAllergy(AllergyDetailDTO allergyDetailDTO) {
+        boolean exists = allergyRepository.existsById(allergyDetailDTO.id());
+
+        if (!exists) {
+            throw new RuntimeException(ALLERGY_NOT_FOUND);
+        }
+
         Allergy allergy = allergyRepository.getReferenceById(allergyDetailDTO.id());
         allergy.updateInfo(allergyDetailDTO);
         return allergy;
     }
 
     public void deleteAllergy(Long id) {
+
+        boolean exists = allergyRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(ALLERGY_NOT_FOUND);
+        }
+
         allergyRepository.deleteById(id);
     }
 }

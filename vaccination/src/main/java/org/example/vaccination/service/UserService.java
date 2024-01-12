@@ -13,9 +13,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final String USER_NOT_FOUND = "User not found";
+
     private final UserRepository userRepository;
 
     public User getUserById(Long id) {
+        boolean exists = userRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(USER_NOT_FOUND);
+        }
+
         return userRepository.getReferenceById(id);
     }
 
@@ -33,12 +41,25 @@ public class UserService {
     }
 
     public User updateUser(UserDetailDTO userDetailDTO) {
+        boolean exists = userRepository.existsById(userDetailDTO.id());
+
+        if (!exists) {
+            throw new RuntimeException(USER_NOT_FOUND);
+        }
+
         User user = userRepository.getReferenceById(userDetailDTO.id());
         user.updateInfo(userDetailDTO);
         return user;
     }
 
     public void deleteUser(Long id) {
+
+        boolean exists = userRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(USER_NOT_FOUND);
+        }
+
         userRepository.deleteById(id);
     }
 }

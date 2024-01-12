@@ -13,9 +13,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
+    private static final String SCHEDULE_NOT_FOUND = "Schedule not found";
+
     private final ScheduleRepository scheduleRepository;
 
     public Schedule getScheduleById(Long id) {
+        boolean exists = scheduleRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+        }
+
         return scheduleRepository.getReferenceById(id);
     }
 
@@ -33,12 +41,24 @@ public class ScheduleService {
     }
 
     public Schedule updateSchedule(ScheduleDetailDTO scheduleDetailDTO) {
+        boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
+
+        if (!exists) {
+            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+        }
+
         Schedule schedule = scheduleRepository.getReferenceById(scheduleDetailDTO.id());
         schedule.updateInfo(scheduleDetailDTO);
         return schedule;
     }
 
     public void deleteSchedule(Long id) {
+        boolean exists = scheduleRepository.existsById(id);
+
+        if (!exists) {
+            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+        }
+
         scheduleRepository.deleteById(id);
     }
 }
