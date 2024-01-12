@@ -1,12 +1,10 @@
 package org.example.vaccination.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Allergy;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
 import org.example.vaccination.repository.AllergyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +18,7 @@ public class AllergyService {
     private final AllergyRepository allergyRepository;
 
     public Allergy getAllergyById(Long id) {
-        boolean exists = allergyRepository.existsById(id);
+        Boolean exists = allergyRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);
@@ -43,7 +41,7 @@ public class AllergyService {
     }
 
     public Allergy updateAllergy(AllergyDetailDTO allergyDetailDTO) {
-        boolean exists = allergyRepository.existsById(allergyDetailDTO.id());
+        Boolean exists = allergyRepository.existsById(allergyDetailDTO.id());
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);
@@ -56,7 +54,7 @@ public class AllergyService {
 
     public void deleteAllergy(Long id) {
 
-        boolean exists = allergyRepository.existsById(id);
+        Boolean exists = allergyRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);

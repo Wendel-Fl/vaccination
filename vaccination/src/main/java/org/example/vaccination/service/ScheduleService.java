@@ -18,7 +18,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     public Schedule getScheduleById(Long id) {
-        boolean exists = scheduleRepository.existsById(id);
+        Boolean exists = scheduleRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(SCHEDULE_NOT_FOUND);
@@ -41,7 +41,7 @@ public class ScheduleService {
     }
 
     public Schedule updateSchedule(ScheduleDetailDTO scheduleDetailDTO) {
-        boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
+        Boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
 
         if (!exists) {
             throw new RuntimeException(SCHEDULE_NOT_FOUND);
@@ -53,7 +53,7 @@ public class ScheduleService {
     }
 
     public void deleteSchedule(Long id) {
-        boolean exists = scheduleRepository.existsById(id);
+        Boolean exists = scheduleRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(SCHEDULE_NOT_FOUND);
