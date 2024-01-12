@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
 
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Schedule")
@@ -38,6 +36,10 @@ public class Schedule {
 
     @Column(name = "observacoes")
     private String notes;
+
+//    TODO: Relação many-to-one para agenda aqui
+//    TODO: Relação many-to-one para usuário aqui
+//    TODO: Referência many-to-many para alergias aqui?
 
     public Schedule(ScheduleDTO scheduleDTO) {
         this.date = scheduleDTO.date();
