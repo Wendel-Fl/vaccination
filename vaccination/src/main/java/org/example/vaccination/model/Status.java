@@ -10,11 +10,11 @@ public enum Status {
     CANCELLED("Cancelado"),
     CARRIED_OUT("Realizado");
 
-    private final String name;
+    private final String description;
 
     public static Status fromStatus(final String nameStatus) {
         for (final Status status : Status.values()) {
-            if (status.name.equals(nameStatus)) {
+            if (status.description.equals(nameStatus)) {
                 return status;
             }
         }

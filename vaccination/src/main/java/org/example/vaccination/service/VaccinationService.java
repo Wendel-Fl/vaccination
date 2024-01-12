@@ -18,7 +18,7 @@ public class VaccinationService {
     private final VaccinationRepository vaccinationRepository;
 
     public Vaccination getVaccineById(Long id) {
-        boolean exists = vaccinationRepository.existsById(id);
+        Boolean exists = vaccinationRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(VACCINATION_NOT_FOUND);
@@ -41,7 +41,7 @@ public class VaccinationService {
     }
 
     public Vaccination updateVaccine(VaccinationDetailDTO vaccinationDetailDTO) {
-        boolean exists = vaccinationRepository.existsById(vaccinationDetailDTO.id());
+        Boolean exists = vaccinationRepository.existsById(vaccinationDetailDTO.id());
 
         if (!exists) {
             throw new RuntimeException(VACCINATION_NOT_FOUND);
@@ -56,7 +56,7 @@ public class VaccinationService {
 
     public void deleteVaccine(Long id) {
 
-        boolean exists = vaccinationRepository.existsById(id);
+        Boolean exists = vaccinationRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(VACCINATION_NOT_FOUND);

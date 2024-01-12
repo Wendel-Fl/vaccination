@@ -18,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User getUserById(Long id) {
-        boolean exists = userRepository.existsById(id);
+        Boolean exists = userRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(USER_NOT_FOUND);
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public User updateUser(UserDetailDTO userDetailDTO) {
-        boolean exists = userRepository.existsById(userDetailDTO.id());
+        Boolean exists = userRepository.existsById(userDetailDTO.id());
 
         if (!exists) {
             throw new RuntimeException(USER_NOT_FOUND);
@@ -54,7 +54,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
 
-        boolean exists = userRepository.existsById(id);
+        Boolean exists = userRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(USER_NOT_FOUND);
