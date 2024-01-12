@@ -42,7 +42,7 @@ public class Schedule {
     public Schedule(ScheduleDTO scheduleDTO) {
         this.date = scheduleDTO.date();
         this.hour = scheduleDTO.hour();
-        this.status = Status.valueOf(scheduleDTO.status().getName());
+        this.status = Status.valueOf(scheduleDTO.status().getDescription());
         this.statusDate = scheduleDTO.statusDate();
         this.notes = scheduleDTO.notes();
     }
@@ -57,7 +57,7 @@ public class Schedule {
         }
 
         if (scheduleDetailDTO.status() != null) {
-            this.status = Status.valueOf(scheduleDetailDTO.status().getName());
+            this.status = Status.valueOf(scheduleDetailDTO.status().getDescription());
         }
 
         if (scheduleDetailDTO.statusDate() != null) {
