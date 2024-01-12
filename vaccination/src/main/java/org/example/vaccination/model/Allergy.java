@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Allergy")
@@ -22,6 +20,8 @@ public class Allergy {
 
     @Column(name = "nome")
     private String name;
+
+//    TODO: Referência many-to-many para usuários aqui?
 
     public Allergy(AllergyDTO allergyDTO) {
         this.name = allergyDTO.name();

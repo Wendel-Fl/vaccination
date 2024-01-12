@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Vaccination")
@@ -34,6 +32,8 @@ public class Vaccination {
 
     @Column(name = "intervalo")
     private Integer interval;
+
+//    TODO: Relação one-to-many para Agendas aqui
 
     public Vaccination(VaccinationDTO vaccinationDTO) {
         this.title = vaccinationDTO.title();
