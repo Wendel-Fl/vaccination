@@ -33,7 +33,7 @@ public class Vaccination {
     @Column(name = "intervalo")
     private Integer interval;
 
-//    TODO: Relação one-to-many para Agendas aqui
+//    TODO: Relação one-to-many para Agendas
 
     public Vaccination(VaccinationDTO vaccinationDTO) {
         this.title = vaccinationDTO.title();

@@ -21,7 +21,7 @@ public class Allergy {
     @Column(name = "nome")
     private String name;
 
-//    TODO: Referência many-to-many para usuários aqui?
+//    TODO: Relação many-to-many para Usuários
 
     public Allergy(AllergyDTO allergyDTO) {
         this.name = allergyDTO.name();

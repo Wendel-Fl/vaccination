@@ -44,6 +44,9 @@ public class User {
     @Column(name = "uf")
     private State state;
 
+//    TODO: Relação many-to-many para Alergias
+//    TODO: Relação one-to-many para Agendas
+
     public User(UserDTO userDTO) {
         this.name = userDTO.name();
         this.dateOfBirth = userDTO.dateOfBirth();

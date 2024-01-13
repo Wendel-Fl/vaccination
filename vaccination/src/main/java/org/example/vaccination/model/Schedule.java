@@ -37,9 +37,9 @@ public class Schedule {
     @Column(name = "observacoes")
     private String notes;
 
-//    TODO: Relação many-to-one para agenda aqui
-//    TODO: Relação many-to-one para usuário aqui
-//    TODO: Referência many-to-many para alergias aqui?
+//    TODO: Relação many-to-one para Vacinas
+//    TODO: Relação many-to-one para Usuários
+//    TODO: Referência many-to-many para Alergias
 
     public Schedule(ScheduleDTO scheduleDTO) {
         this.date = scheduleDTO.date();
