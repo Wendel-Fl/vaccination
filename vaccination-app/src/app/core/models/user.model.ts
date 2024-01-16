@@ -1,3 +1,5 @@
+import { Allergy } from "./allergy.model";
+
 export class User {
 
     public id: number;
@@ -9,6 +11,7 @@ export class User {
     public district: string;
     public city: string;
     public fu: string;
+    public allergies: Allergy[];
 
     constructor(
         id: number = null,
@@ -18,7 +21,8 @@ export class User {
         publicPlace: string = null,
         number: number = null,
         city: string,
-        fu: string
+        fu: string,
+        allergies: Allergy[] = []
     ) {
         this.id = id;
         this.name = name;
@@ -28,6 +32,7 @@ export class User {
         this.number = number;
         this.city = city;
         this.fu = fu;
+        this.allergies = allergies;
     }
 
 }
