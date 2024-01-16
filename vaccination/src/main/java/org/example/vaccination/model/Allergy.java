@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +23,8 @@ public class Allergy {
     @Column(name = "nome")
     private String name;
 
-//    TODO: Relação many-to-many para Usuários
+    @ManyToMany(mappedBy = "allergies")
+    private List<User> users;
 
     public Allergy(AllergyDTO allergyDTO) {
         this.name = allergyDTO.name();

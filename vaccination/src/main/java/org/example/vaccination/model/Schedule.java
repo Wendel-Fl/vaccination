@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
 
@@ -37,9 +38,14 @@ public class Schedule {
     @Column(name = "observacoes")
     private String notes;
 
-//    TODO: Relação many-to-one para Vacinas
-//    TODO: Relação many-to-one para Usuários
-//    TODO: Referência many-to-many para Alergias
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "vacina_id", nullable = false)
+    private Vaccination vaccination;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private User user;
 
     public Schedule(ScheduleDTO scheduleDTO) {
         this.date = scheduleDTO.date();
@@ -47,6 +53,7 @@ public class Schedule {
         this.status = Status.valueOf(scheduleDTO.status().getDescription());
         this.statusDate = scheduleDTO.statusDate();
         this.notes = scheduleDTO.notes();
+        this.vaccination = scheduleDTO.vaccination();
     }
 
     public void updateInfo(ScheduleDetailDTO scheduleDetailDTO) {
@@ -70,4 +77,8 @@ public class Schedule {
             this.notes = scheduleDetailDTO.notes();
         }
     }
+
+//    public void attachVaccination(Vaccination vaccination) {
+//        this.vaccination = vaccination;
+//    }
 }

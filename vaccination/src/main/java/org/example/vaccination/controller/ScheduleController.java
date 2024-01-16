@@ -57,6 +57,15 @@ public class ScheduleController {
         return ResponseEntity.ok(new ScheduleDetailDTO(schedule));
     }
 
+    @PutMapping(path = "attach-vaccination")
+    @Transactional
+    public ResponseEntity<ScheduleDetailDTO> attachVaccination(
+            @RequestBody @Valid ScheduleDetailDTO scheduleDetailDTO
+    ) {
+        Schedule schedule = scheduleService.attachVaccination(scheduleDetailDTO);
+        return ResponseEntity.ok(new ScheduleDetailDTO(schedule));
+    }
+
     @DeleteMapping(path = "/{id}")
     @Transactional
     public ResponseEntity<Schedule> deleteSchedule(@PathVariable Long id) {

@@ -5,6 +5,7 @@ import org.example.vaccination.model.Schedule;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import org.example.vaccination.repository.ScheduleRepository;
+import org.example.vaccination.repository.VaccinationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,14 @@ public class ScheduleService {
 
     private static final String SCHEDULE_NOT_FOUND = "Schedule not found";
 
+    private static final String VACCINATION_NOT_FOUND = "Vaccination not found";
+
     private final ScheduleRepository scheduleRepository;
 
+    private final VaccinationRepository vaccinationRepository;
+
     public Schedule getScheduleById(Long id) {
-        Boolean exists = scheduleRepository.existsById(id);
+        boolean exists = scheduleRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(SCHEDULE_NOT_FOUND);
@@ -41,7 +46,7 @@ public class ScheduleService {
     }
 
     public Schedule updateSchedule(ScheduleDetailDTO scheduleDetailDTO) {
-        Boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
+        boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
 
         if (!exists) {
             throw new RuntimeException(SCHEDULE_NOT_FOUND);
@@ -52,8 +57,30 @@ public class ScheduleService {
         return schedule;
     }
 
+    public Schedule attachVaccination(ScheduleDetailDTO scheduleDetailDTO) {
+        boolean scheduleExists = scheduleRepository.existsById(scheduleDetailDTO.id());
+        boolean vaccinationExists = vaccinationRepository
+                .existsById(scheduleDetailDTO.vaccination().getId());
+
+        if (!scheduleExists) {
+            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+        }
+
+        if (!vaccinationExists) {
+            throw new RuntimeException(VACCINATION_NOT_FOUND);
+        }
+
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleDetailDTO.id());
+
+//        schedule.attachVaccination(scheduleDetailDTO.vaccination());
+
+        schedule.setVaccination(scheduleDetailDTO.vaccination());
+
+        return schedule;
+    }
+
     public void deleteSchedule(Long id) {
-        Boolean exists = scheduleRepository.existsById(id);
+        boolean exists = scheduleRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(SCHEDULE_NOT_FOUND);

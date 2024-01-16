@@ -18,7 +18,7 @@ public class AllergyService {
     private final AllergyRepository allergyRepository;
 
     public Allergy getAllergyById(Long id) {
-        Boolean exists = allergyRepository.existsById(id);
+        boolean exists = allergyRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);
@@ -41,7 +41,7 @@ public class AllergyService {
     }
 
     public Allergy updateAllergy(AllergyDetailDTO allergyDetailDTO) {
-        Boolean exists = allergyRepository.existsById(allergyDetailDTO.id());
+        boolean exists = allergyRepository.existsById(allergyDetailDTO.id());
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);
@@ -54,7 +54,7 @@ public class AllergyService {
 
     public void deleteAllergy(Long id) {
 
-        Boolean exists = allergyRepository.existsById(id);
+        boolean exists = allergyRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);

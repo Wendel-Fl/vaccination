@@ -4,10 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.vaccination.model.dto.UserDTO;
 import org.example.vaccination.model.dto.UserDetailDTO;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -44,8 +47,18 @@ public class User {
     @Column(name = "uf")
     private State state;
 
-//    TODO: Relação many-to-many para Alergias
-//    TODO: Relação one-to-many para Agendas
+    @Setter
+    @ManyToMany
+    @JoinTable(
+            name = "usuarios_alergias",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "alergia_id")
+    )
+    private Set<Allergy> allergies;
+
+    @Setter
+    @OneToMany(mappedBy = "user")
+    private List<Schedule> schedules;
 
     public User(UserDTO userDTO) {
         this.name = userDTO.name();
@@ -56,6 +69,8 @@ public class User {
         this.district = userDTO.district();
         this.city = userDTO.city();
         this.state = State.valueOf(userDTO.state().getAcronym());
+        this.allergies = userDTO.allergies();
+        this.schedules = userDTO.schedules();
     }
 
     public void updateInfo(UserDetailDTO userDetailDTO) {
@@ -91,4 +106,11 @@ public class User {
             this.state = State.valueOf(userDetailDTO.state().getAcronym());
         }
     }
+
+//    Refatorar para usar o método attachAllergy
+//    public void attachAllergy(UserDetailDTO userDetailDTO) {
+//        if (userDetailDTO.allergies() != null) {
+//            this.allergies.addAll(userDetailDTO.allergies());
+//        }
+//    }
 }
