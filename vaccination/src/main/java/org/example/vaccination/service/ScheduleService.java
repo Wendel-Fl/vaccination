@@ -34,7 +34,7 @@ public class ScheduleService {
 
     public List<ScheduleDetailDTO> getAllSchedules() {
         return scheduleRepository
-                .findAll()
+                .filterSchedule()
                 .stream()
                 .map(ScheduleDetailDTO::new)
                 .toList();
