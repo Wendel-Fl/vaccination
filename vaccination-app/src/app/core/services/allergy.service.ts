@@ -28,7 +28,7 @@ export class AllergyService {
   }
 
   public findAll(): Observable<Allergy[]> {
-    return this.http.get<Allergy[]>(this.url);
+    return this.http.get<Allergy[]>(`${this.url}/all`);
   }
 
   public update(allergy: Allergy): Observable<Allergy> {
