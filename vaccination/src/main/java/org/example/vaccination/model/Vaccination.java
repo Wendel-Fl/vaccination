@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,7 +35,8 @@ public class Vaccination {
     @Column(name = "intervalo")
     private Integer interval;
 
-//    TODO: Relação one-to-many para Agendas
+    @OneToMany(mappedBy = "vaccination")
+    private List<Schedule> schedules;
 
     public Vaccination(VaccinationDTO vaccinationDTO) {
         this.title = vaccinationDTO.title();

@@ -1,10 +1,14 @@
 package org.example.vaccination.model.dto;
 
 import jakarta.validation.constraints.NotNull;
+import org.example.vaccination.model.Allergy;
+import org.example.vaccination.model.Schedule;
 import org.example.vaccination.model.State;
 import org.example.vaccination.model.User;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 public record UserDetailDTO(
         @NotNull
@@ -24,7 +28,11 @@ public record UserDetailDTO(
 
         String city,
 
-        State state
+        State state,
+
+        Set<Allergy> allergies,
+
+        List<Schedule> schedules
 ) {
     public UserDetailDTO(User user) {
         this(
@@ -36,7 +44,9 @@ public record UserDetailDTO(
                 user.getNumber(),
                 user.getDistrict(),
                 user.getCity(),
-                user.getState()
+                user.getState(),
+                user.getAllergies(),
+                user.getSchedules()
         );
     }
 }
