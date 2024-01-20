@@ -1,6 +1,7 @@
 package org.example.vaccination.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,11 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Schedule")
@@ -24,7 +27,7 @@ public class Schedule {
     private Long id;
 
     @Column(name = "data_hora")
-//    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+//    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private LocalDateTime dateTime;
 
     @Column(name = "situacao")
@@ -38,13 +41,13 @@ public class Schedule {
     private String notes;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacina_id", nullable = false)
     @JsonBackReference(value = "schedule-vaccination")
     private Vaccination vaccination;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     @JsonBackReference(value = "schedule-user")
     private User user;

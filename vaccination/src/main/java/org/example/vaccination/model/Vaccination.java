@@ -1,5 +1,7 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import org.example.vaccination.model.dto.VaccinationDetailDTO;
 import java.util.List;
 
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Vaccination")
@@ -36,8 +39,13 @@ public class Vaccination {
     @Column(name = "intervalo")
     private Integer interval;
 
-    @OneToMany(mappedBy = "vaccination")
+    @OneToMany(
+            mappedBy = "vaccination",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
     @JsonManagedReference(value = "schedule-vaccination")
+    @JsonIgnore
     private List<Schedule> schedules;
 
     public Vaccination(VaccinationDTO vaccinationDTO) {

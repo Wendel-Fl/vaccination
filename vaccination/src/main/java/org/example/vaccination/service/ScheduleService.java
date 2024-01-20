@@ -74,7 +74,7 @@ public class ScheduleService {
 
         schedule.setVaccination(vaccination);
 
-        logger.info("Schedule created: {}", schedule);
+        logger.info("Schedule created: {}", schedule.getUser().getId());
 
         return scheduleRepository.save(schedule);
     }
