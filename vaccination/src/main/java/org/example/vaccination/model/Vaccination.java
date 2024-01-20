@@ -37,7 +37,7 @@ public class Vaccination {
     private Integer interval;
 
     @OneToMany(mappedBy = "vaccination")
-    @JsonManagedReference
+    @JsonManagedReference(value = "schedule-vaccination")
     private List<Schedule> schedules;
 
     public Vaccination(VaccinationDTO vaccinationDTO) {

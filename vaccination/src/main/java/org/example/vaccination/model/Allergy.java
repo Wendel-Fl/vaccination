@@ -25,7 +25,6 @@ public class Allergy {
     private String name;
 
     @ManyToMany(mappedBy = "allergies")
-    @JsonBackReference
     private List<User> users;
 
     public Allergy(AllergyDTO allergyDTO) {

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,13 +40,13 @@ public class Schedule {
     @Setter
     @ManyToOne
     @JoinColumn(name = "vacina_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "schedule-vaccination")
     private Vaccination vaccination;
 
-    @ManyToOne
     @Setter
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "schedule-user")
     private User user;
 
     public Schedule(ScheduleDTO scheduleDTO) {
