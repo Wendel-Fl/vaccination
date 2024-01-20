@@ -1,5 +1,6 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,11 +24,9 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "data")
-    private LocalDate date;
-
-    @Column(name = "hora")
-    private LocalDateTime hour;
+    @Column(name = "data_hora")
+//    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime dateTime;
 
     @Column(name = "situacao")
     @Enumerated(EnumType.STRING)
@@ -41,28 +41,27 @@ public class Schedule {
     @Setter
     @ManyToOne
     @JoinColumn(name = "vacina_id", nullable = false)
+    @JsonBackReference
     private Vaccination vaccination;
 
     @ManyToOne
+    @Setter
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     public Schedule(ScheduleDTO scheduleDTO) {
-        this.date = scheduleDTO.date();
-        this.hour = scheduleDTO.hour();
-        this.status = Status.valueOf(scheduleDTO.status().getDescription());
+        this.dateTime = scheduleDTO.dateTime();
+        this.status = scheduleDTO.status();
         this.statusDate = scheduleDTO.statusDate();
         this.notes = scheduleDTO.notes();
         this.vaccination = scheduleDTO.vaccination();
+        this.user = scheduleDTO.user();
     }
 
     public void updateInfo(ScheduleDetailDTO scheduleDetailDTO) {
-        if (scheduleDetailDTO.date() != null) {
-            this.date = scheduleDetailDTO.date();
-        }
-
-        if (scheduleDetailDTO.hour() != null) {
-            this.hour = scheduleDetailDTO.hour();
+        if (scheduleDetailDTO.dateTime() != null) {
+            this.dateTime = scheduleDetailDTO.dateTime();
         }
 
         if (scheduleDetailDTO.status() != null) {

@@ -1,5 +1,7 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -54,10 +56,15 @@ public class User {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "alergia_id")
     )
+    @JsonManagedReference
     private Set<Allergy> allergies;
 
     @Setter
-    @OneToMany(mappedBy = "user")
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
     private List<Schedule> schedules;
 
     public User(UserDTO userDTO) {
@@ -70,7 +77,6 @@ public class User {
         this.city = userDTO.city();
         this.state = State.valueOf(userDTO.state().getAcronym());
         this.allergies = userDTO.allergies();
-        this.schedules = userDTO.schedules();
     }
 
     public void updateInfo(UserDetailDTO userDetailDTO) {

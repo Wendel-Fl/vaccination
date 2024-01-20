@@ -35,8 +35,6 @@ public record UserDTO(
         @NotNull
         State state,
 
-        Set<Allergy> allergies,
-
-        List<Schedule> schedules
+        Set<Allergy> allergies
 ) {
 }

@@ -1,5 +1,6 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Allergy {
     private String name;
 
     @ManyToMany(mappedBy = "allergies")
+    @JsonBackReference
     private List<User> users;
 
     public Allergy(AllergyDTO allergyDTO) {

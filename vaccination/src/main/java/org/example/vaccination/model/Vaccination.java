@@ -1,5 +1,6 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Vaccination {
     private Integer interval;
 
     @OneToMany(mappedBy = "vaccination")
+    @JsonManagedReference
     private List<Schedule> schedules;
 
     public Vaccination(VaccinationDTO vaccinationDTO) {
