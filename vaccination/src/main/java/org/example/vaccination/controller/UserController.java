@@ -66,15 +66,6 @@ public class UserController {
         return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
-//    @PutMapping(path = "/attach-schedule")
-//    @Transactional
-//    public ResponseEntity<UserDetailDTO> attachSchedule(
-//            @RequestBody @Valid UserDetailDTO userDetailDTO
-//    ) {
-//        User user = userService.attachSchedule(userDetailDTO);
-//        return ResponseEntity.ok(new UserDetailDTO(user));
-//    }
-
     @DeleteMapping(path = "/{id}")
     @Transactional
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {

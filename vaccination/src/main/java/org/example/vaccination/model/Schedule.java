@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +26,6 @@ public class Schedule {
     private Long id;
 
     @Column(name = "data_hora")
-//    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private LocalDateTime dateTime;
 
     @Column(name = "situacao")

@@ -28,7 +28,9 @@ public record UserDetailDTO(
 
         String city,
 
-        State state
+        State state,
+
+        Set<Allergy> allergies
 ) {
     public UserDetailDTO(User user) {
         this(
@@ -40,7 +42,8 @@ public record UserDetailDTO(
                 user.getNumber(),
                 user.getDistrict(),
                 user.getCity(),
-                user.getState()
+                user.getState(),
+                user.getAllergies()
         );
     }
 }
