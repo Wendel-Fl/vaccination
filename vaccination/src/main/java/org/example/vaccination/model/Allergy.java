@@ -1,5 +1,7 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import org.example.vaccination.model.dto.AllergyDetailDTO;
 import java.util.List;
 
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Allergy")

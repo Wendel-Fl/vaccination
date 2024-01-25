@@ -42,7 +42,7 @@ public class VaccinationController {
 
         var uri = uriBuilder
                 .path("/vaccination/{id}")
-                .buildAndExpand()
+                .buildAndExpand(vaccination.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(new VaccinationDetailDTO(vaccination));

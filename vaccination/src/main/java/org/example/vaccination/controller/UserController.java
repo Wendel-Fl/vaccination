@@ -41,7 +41,7 @@ public class UserController {
         User user = userService.createUser(userDTO);
 
         var uri = uriBuilder
-                .path("user/{id}")
+                .path("/user/{id}")
                 .buildAndExpand(user.getId())
                 .toUri();
 
@@ -66,14 +66,14 @@ public class UserController {
         return ResponseEntity.ok(new UserDetailDTO(user));
     }
 
-    @PutMapping(path = "/attach-schedule")
-    @Transactional
-    public ResponseEntity<UserDetailDTO> attachSchedule(
-            @RequestBody @Valid UserDetailDTO userDetailDTO
-    ) {
-        User user = userService.attachSchedule(userDetailDTO);
-        return ResponseEntity.ok(new UserDetailDTO(user));
-    }
+//    @PutMapping(path = "/attach-schedule")
+//    @Transactional
+//    public ResponseEntity<UserDetailDTO> attachSchedule(
+//            @RequestBody @Valid UserDetailDTO userDetailDTO
+//    ) {
+//        User user = userService.attachSchedule(userDetailDTO);
+//        return ResponseEntity.ok(new UserDetailDTO(user));
+//    }
 
     @DeleteMapping(path = "/{id}")
     @Transactional

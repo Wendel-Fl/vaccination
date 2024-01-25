@@ -1,5 +1,8 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Users")
@@ -54,10 +58,17 @@ public class User {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "alergia_id")
     )
+    @JsonIgnore
     private Set<Allergy> allergies;
 
     @Setter
-    @OneToMany(mappedBy = "user")
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference(value = "schedule-user")
+    @JsonIgnore
     private List<Schedule> schedules;
 
     public User(UserDTO userDTO) {
@@ -70,7 +81,6 @@ public class User {
         this.city = userDTO.city();
         this.state = State.valueOf(userDTO.state().getAcronym());
         this.allergies = userDTO.allergies();
-        this.schedules = userDTO.schedules();
     }
 
     public void updateInfo(UserDetailDTO userDetailDTO) {

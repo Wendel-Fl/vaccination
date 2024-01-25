@@ -80,31 +80,31 @@ public class UserService {
         return user;
     }
 
-    public User attachSchedule(UserDetailDTO userDetailDTO) {
-        boolean userExists = userRepository.existsById(userDetailDTO.id());
-        boolean scheduleExists = scheduleRepository
-                .existsById(
-                        userDetailDTO
-                                .schedules()
-                                .stream()
-                                .map(Schedule::getId)
-                                .count()
-                );
-
-        if (!userExists) {
-            throw new RuntimeException(USER_NOT_FOUND);
-        }
-
-        if (!scheduleExists) {
-            throw new RuntimeException(SCHEDULE_NOT_FOUND);
-        }
-
-        User user = userRepository.getReferenceById(userDetailDTO.id());
-
-        user.setSchedules(userDetailDTO.schedules());
-
-        return user;
-    }
+//    public User attachSchedule(UserDetailDTO userDetailDTO) {
+//        boolean userExists = userRepository.existsById(userDetailDTO.id());
+//        boolean scheduleExists = scheduleRepository
+//                .existsById(
+//                        userDetailDTO
+//                                .schedules()
+//                                .stream()
+//                                .map(Schedule::getId)
+//                                .count()
+//                );
+//
+//        if (!userExists) {
+//            throw new RuntimeException(USER_NOT_FOUND);
+//        }
+//
+//        if (!scheduleExists) {
+//            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+//        }
+//
+//        User user = userRepository.getReferenceById(userDetailDTO.id());
+//
+//        user.setSchedules(userDetailDTO.schedules());
+//
+//        return user;
+//    }
 
     public User updateUser(UserDetailDTO userDetailDTO) {
         boolean exists = userRepository.existsById(userDetailDTO.id());
