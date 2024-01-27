@@ -2,6 +2,7 @@ package org.example.vaccination.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Schedule;
+import org.example.vaccination.model.Status;
 import org.example.vaccination.model.User;
 import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.ScheduleDTO;
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.example.vaccination.model.Status.SCHEDULED;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +76,10 @@ public class ScheduleService {
         schedule.setUser(user);
 
         schedule.setVaccination(vaccination);
+
+        schedule.setStatus(SCHEDULED);
+
+        schedule.setStatusDate(null);
 
         logger.info("Schedule created: {}", schedule.getUser().getId());
 
