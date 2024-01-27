@@ -1,12 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { VacTableComponent } from './vac-table.component';
+import { VacTableHeaderComponent } from './vac-table-header/vac-table-header.component';
+import { VacTableHeaderCellComponent } from './vac-table-header-cell/vac-table-header-cell.component';
+import { VacTableRowComponent } from './vac-table-row/vac-table-row.component';
+import { VacTableRowCellComponent } from './vac-table-row-cell/vac-table-row-cell.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    VacTableComponent,
+    VacTableHeaderComponent,
+    VacTableHeaderCellComponent,
+    VacTableRowComponent,
+    VacTableRowCellComponent
+  ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    VacTableComponent,
+    VacTableHeaderComponent,
+    VacTableHeaderCellComponent,
+    VacTableRowComponent,
+    VacTableRowCellComponent
   ]
 })
 export class TableModule { }
