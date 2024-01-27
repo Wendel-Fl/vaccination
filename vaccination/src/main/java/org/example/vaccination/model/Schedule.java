@@ -1,5 +1,7 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Schedule")
@@ -22,11 +25,8 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "data")
-    private LocalDate date;
-
-    @Column(name = "hora")
-    private LocalDateTime hour;
+    @Column(name = "data_hora")
+    private LocalDateTime dateTime;
 
     @Column(name = "situacao")
     @Enumerated(EnumType.STRING)
@@ -39,30 +39,29 @@ public class Schedule {
     private String notes;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacina_id", nullable = false)
+    @JsonBackReference(value = "schedule-vaccination")
     private Vaccination vaccination;
 
-    @ManyToOne
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference(value = "schedule-user")
     private User user;
 
     public Schedule(ScheduleDTO scheduleDTO) {
-        this.date = scheduleDTO.date();
-        this.hour = scheduleDTO.hour();
-        this.status = Status.valueOf(scheduleDTO.status().getDescription());
+        this.dateTime = scheduleDTO.dateTime();
+        this.status = scheduleDTO.status();
         this.statusDate = scheduleDTO.statusDate();
         this.notes = scheduleDTO.notes();
         this.vaccination = scheduleDTO.vaccination();
+        this.user = scheduleDTO.user();
     }
 
     public void updateInfo(ScheduleDetailDTO scheduleDetailDTO) {
-        if (scheduleDetailDTO.date() != null) {
-            this.date = scheduleDetailDTO.date();
-        }
-
-        if (scheduleDetailDTO.hour() != null) {
-            this.hour = scheduleDetailDTO.hour();
+        if (scheduleDetailDTO.dateTime() != null) {
+            this.dateTime = scheduleDetailDTO.dateTime();
         }
 
         if (scheduleDetailDTO.status() != null) {

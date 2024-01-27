@@ -1,5 +1,7 @@
 package org.example.vaccination.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +9,10 @@ import lombok.NoArgsConstructor;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Allergy")
@@ -24,7 +27,8 @@ public class Allergy {
     private String name;
 
     @ManyToMany(mappedBy = "allergies")
-    private List<User> users;
+    @JsonIgnore
+    private Set<User> users;
 
     public Allergy(AllergyDTO allergyDTO) {
         this.name = allergyDTO.name();

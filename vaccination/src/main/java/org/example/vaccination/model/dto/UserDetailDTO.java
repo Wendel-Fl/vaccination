@@ -30,9 +30,7 @@ public record UserDetailDTO(
 
         State state,
 
-        Set<Allergy> allergies,
-
-        List<Schedule> schedules
+        Set<Allergy> allergies
 ) {
     public UserDetailDTO(User user) {
         this(
@@ -45,8 +43,7 @@ public record UserDetailDTO(
                 user.getDistrict(),
                 user.getCity(),
                 user.getState(),
-                user.getAllergies(),
-                user.getSchedules()
+                user.getAllergies()
         );
     }
 }

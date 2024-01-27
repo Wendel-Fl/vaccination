@@ -42,7 +42,7 @@ public class ScheduleController {
 
         var uri = uriBuilder
                 .path("/schedule/{id}")
-                .buildAndExpand()
+                .buildAndExpand(schedule.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(new ScheduleDetailDTO(schedule));
