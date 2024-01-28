@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
+import { UtilComponent } from '../../../core/utils/util.component';
 
 @Component({
   selector: 'app-user-list',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
-export class UserListComponent {
+export class UserListComponent extends UtilComponent {
+
+  constructor(
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
 }

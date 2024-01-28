@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
+import { UtilComponent } from '../../../core/utils/util.component';
 
 @Component({
   selector: 'app-schedule-form',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './schedule-form.component.html',
   styleUrl: './schedule-form.component.scss'
 })
-export class ScheduleFormComponent {
+export class ScheduleFormComponent extends UtilComponent {
+
+  constructor(
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
 }

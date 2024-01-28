@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
+import { UtilComponent } from '../../../core/utils/util.component';
 
 @Component({
   selector: 'app-user-form',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss'
 })
-export class UserFormComponent {
+export class UserFormComponent extends UtilComponent {
+
+  constructor(
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
 }

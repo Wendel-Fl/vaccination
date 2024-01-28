@@ -3,6 +3,8 @@ import { Schedule } from '../models/schedule.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { ScheduleFilter } from '../types/filters.type';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +29,10 @@ export class ScheduleService {
     return this.http.get<Schedule>(`${this.url}/${id}`);
   }
 
-  public findAll(): Observable<Schedule[]> {
-    return this.http.get<Schedule[]>(this.url);
+  public findAll(filter: ScheduleFilter): Observable<Schedule[]> {
+    return this.http.get<Schedule[]>(
+      `${this.url}/all?status=${filter.status}&date=${moment(Date.toString()).format('MM-dd-YYYY')}&hour=${filter.hour}`
+    );
   }
 
   public update(schedule: Schedule): Observable<Schedule> {

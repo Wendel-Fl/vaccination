@@ -1,3 +1,6 @@
+import { User } from "./user.model";
+import { Vaccine } from "./vaccine.model";
+
 export class Schedule {
 
     public id: number;
@@ -6,6 +9,8 @@ export class Schedule {
     public status: string;
     public statusDate: string;
     public note: string;
+    public user: User;
+    public vaccination: Vaccine;
 
     constructor(
         id: number = null,
@@ -13,7 +18,9 @@ export class Schedule {
         hour: string = null,
         status: string = null,
         statusDate: string = null,
-        note: string
+        note: string = null,
+        user: User = null,
+        vaccination: Vaccine = null
     ) {
         this.id = id;
         this.date = date;
@@ -21,6 +28,8 @@ export class Schedule {
         this.status = status;
         this.statusDate = statusDate;
         this.note = note;
+        this.user = user;
+        this.vaccination = vaccination;
     }
 
 }

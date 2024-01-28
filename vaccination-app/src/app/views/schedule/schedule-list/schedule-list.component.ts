@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
+import { UtilComponent } from '../../../core/utils/util.component';
 
 @Component({
   selector: 'app-schedule-list',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './schedule-list.component.html',
   styleUrl: './schedule-list.component.scss'
 })
-export class ScheduleListComponent {
+export class ScheduleListComponent extends UtilComponent {
+
+  constructor(
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
 }

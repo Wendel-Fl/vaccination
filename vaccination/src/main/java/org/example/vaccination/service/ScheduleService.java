@@ -13,7 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.vaccination.model.Status.SCHEDULED;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +56,7 @@ public class ScheduleService {
                 .toList();
     }
 
-    public Schedule createSchedule(ScheduleDTO scheduleDTO) {
+    public List<Schedule> createSchedule(ScheduleDTO scheduleDTO) {
         boolean userExists = userRepository.existsById(scheduleDTO.user().getId());
 
         boolean vaccinationExists = vaccinationRepository.existsById(scheduleDTO.vaccination().getId());
@@ -68,15 +73,22 @@ public class ScheduleService {
 
         Vaccination vaccination = vaccinationRepository.getReferenceById(scheduleDTO.vaccination().getId());
 
-        Schedule schedule = new Schedule(scheduleDTO);
+        Integer dosage = vaccination.getDosage();
+        Integer interval = vaccination.getInterval();
+        ChronoUnit frequency = vaccination.getFrequencyUnit();
 
-        schedule.setUser(user);
+        List<Schedule> schedules = new ArrayList<>();
 
-        schedule.setVaccination(vaccination);
+        LocalDateTime initialDateTime = scheduleDTO.dateTime();
 
-        logger.info("Schedule created: {}", schedule.getUser().getId());
+        for (int i = 0; i < dosage; i++) {
+            Schedule schedule = buildSchedule(scheduleDTO, user, vaccination);
+            LocalDateTime currentDateTime = initialDateTime.plus((long) i * interval, frequency);
+            schedule.setDateTime(currentDateTime);
+            schedules.add(schedule);
+        }
 
-        return scheduleRepository.save(schedule);
+        return scheduleRepository.saveAll(schedules);
     }
 
     public Schedule updateSchedule(ScheduleDetailDTO scheduleDetailDTO) {
@@ -121,5 +133,18 @@ public class ScheduleService {
         }
 
         scheduleRepository.deleteById(id);
+    }
+
+    private static Schedule buildSchedule(ScheduleDTO scheduleDTO, User user, Vaccination vaccination) {
+        Schedule schedule = new Schedule(scheduleDTO);
+
+        schedule.setUser(user);
+
+        schedule.setVaccination(vaccination);
+
+        schedule.setStatus(SCHEDULED);
+
+        schedule.setStatusDate(null);
+        return schedule;
     }
 }

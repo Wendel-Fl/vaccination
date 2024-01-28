@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,18 +35,17 @@ public class ScheduleController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ScheduleDetailDTO> createSchedule(
-            @RequestBody @Valid ScheduleDTO scheduleDTO,
-            UriComponentsBuilder uriBuilder
+    public ResponseEntity<List<ScheduleDetailDTO>> createSchedule(
+            @RequestBody @Valid ScheduleDTO scheduleDTO
     ) {
-        Schedule schedule = scheduleService.createSchedule(scheduleDTO);
+        List<Schedule> schedules = scheduleService.createSchedule(scheduleDTO);
 
-        var uri = uriBuilder
-                .path("/schedule/{id}")
-                .buildAndExpand(schedule.getId())
-                .toUri();
+        List<ScheduleDetailDTO> scheduleDetailsDTO = schedules
+                .stream()
+                .map(ScheduleDetailDTO::new)
+                .toList();
 
-        return ResponseEntity.created(uri).body(new ScheduleDetailDTO(schedule));
+        return ResponseEntity.ok(scheduleDetailsDTO);
     }
 
     @PutMapping

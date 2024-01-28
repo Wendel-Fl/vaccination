@@ -13,6 +13,9 @@ import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.example.vaccination.model.Status.CANCELLED;
+import static org.example.vaccination.model.Status.CARRIED_OUT;
+
 @Getter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
@@ -26,13 +29,16 @@ public class Schedule {
     private Long id;
 
     @Column(name = "data_hora")
+    @Setter
     private LocalDateTime dateTime;
 
     @Column(name = "situacao")
     @Enumerated(EnumType.STRING)
+    @Setter
     private Status status;
 
     @Column(name = "data_situacao")
+    @Setter
     private LocalDate statusDate;
 
     @Column(name = "observacoes")
@@ -52,8 +58,6 @@ public class Schedule {
 
     public Schedule(ScheduleDTO scheduleDTO) {
         this.dateTime = scheduleDTO.dateTime();
-        this.status = scheduleDTO.status();
-        this.statusDate = scheduleDTO.statusDate();
         this.notes = scheduleDTO.notes();
         this.vaccination = scheduleDTO.vaccination();
         this.user = scheduleDTO.user();
@@ -65,11 +69,11 @@ public class Schedule {
         }
 
         if (scheduleDetailDTO.status() != null) {
-            this.status = Status.valueOf(scheduleDetailDTO.status().getDescription());
-        }
-
-        if (scheduleDetailDTO.statusDate() != null) {
-            this.statusDate = scheduleDetailDTO.statusDate();
+            this.status = scheduleDetailDTO.status();
+            if (this.status == CARRIED_OUT ||
+                    this.status == CANCELLED) {
+                this.statusDate = LocalDate.now();
+            }
         }
 
         if (scheduleDetailDTO.notes() != null) {

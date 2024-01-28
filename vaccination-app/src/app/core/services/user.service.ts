@@ -28,7 +28,7 @@ export class UserService {
   }
 
   public findAll(): Observable<User[]> {
-    return this.http.get<User[]>(this.url);
+    return this.http.get<User[]>(`${this.url}/all`);
   }
 
   public update(user: User): Observable<User> {

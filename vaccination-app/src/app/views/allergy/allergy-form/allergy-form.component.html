@@ -1,1 +1,42 @@
-<p>allergy-form works!</p>
+<vac-flex>
+    <form *ngIf="allergyForm$ | async as allergyForm" [formGroup]="allergyForm">
+        <h1>
+            {{ (newAllergy$ | async) ? 'Nova Alergia' : 'Alergia' }}
+        </h1>
+        <vac-flex mainAxis="column" justify="center" gap="32">
+            <vac-grid>
+                <vac-form-field class="md-item">
+                    <input 
+                        type="text"
+                        placeholder="Alergia"
+                        formControlName="name"
+                    />
+                    <vac-form-field-error *ngIf="allergyForm?.touched && allergyForm?.errors?.['required']">
+                        O nome da alergia é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="allergyForm?.errors?.['maxlength']">
+                        Máximo de <strong>40 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+            </vac-grid>
+            <vac-flex justify="center" align="center" gap="16">
+                <a vacButton routerLink="/allergy">Voltar</a>
+                <button 
+                    vacButton 
+                    (click)="onClickDelete()" 
+                    type="button"
+                    *ngIf="!(newAllergy$ | async)"
+                >
+                    Deletar Alergia
+                </button>
+                <button 
+                    vacButton 
+                    (click)="onSave()" 
+                    type="button"
+                >
+                    Salvar Alergia
+                </button>
+            </vac-flex>
+        </vac-flex>
+    </form>
+</vac-flex>

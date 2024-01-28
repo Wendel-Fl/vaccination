@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
+import { UtilComponent } from '../../../core/utils/util.component';
 
 @Component({
   selector: 'app-vaccine-list',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './vaccine-list.component.html',
   styleUrl: './vaccine-list.component.scss'
 })
-export class VaccineListComponent {
+export class VaccineListComponent extends UtilComponent {
+
+  constructor(
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
 }

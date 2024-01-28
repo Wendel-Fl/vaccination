@@ -28,7 +28,7 @@ export class VaccineService {
   }
 
   public findAll(): Observable<Vaccine[]> {
-    return this.http.get<Vaccine[]>(this.url);
+    return this.http.get<Vaccine[]>(`${this.url}/all`);
   }
 
   public update(vaccine: Vaccine): Observable<Vaccine> {
