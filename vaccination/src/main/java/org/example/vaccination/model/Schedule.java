@@ -29,6 +29,7 @@ public class Schedule {
     private Long id;
 
     @Column(name = "data_hora")
+    @Setter
     private LocalDateTime dateTime;
 
     @Column(name = "situacao")
