@@ -1,1 +1,36 @@
-<h1>Alergias</h1>
+<vac-flex mainAxis="column" gap="32">
+    <vac-flex justify="space-between" align="center">
+        <h1>Alergias</h1>
+        <a vacButton routerLink="/allergy/form/0">Cadastrar Alergia</a>
+    </vac-flex>
+    <vac-table *ngIf="allergies$ | async as allergies; else emptyTable">
+        <vac-table-header>
+            <vac-table-header-cell>ID</vac-table-header-cell>
+            <vac-table-header-cell>Nome</vac-table-header-cell>
+            <vac-table-header-cell>Ações</vac-table-header-cell>
+        </vac-table-header>
+        <vac-table-row *ngFor="let allergy of allergies">
+            <vac-table-row-cell>{{ allergy?.id }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ allergy?.name }}</vac-table-row-cell>
+            <vac-table-row-cell>
+                <button 
+                    vacButton 
+                    (click)="onClickDelete(allergy?.id)" 
+                    type="button"
+                >
+                    Deletar Alergia
+                </button>
+                <button 
+                    vacButton 
+                    (click)="onClickEdit(allergy?.id)" 
+                    type="button"
+                >
+                    Editar Alergia
+                </button>
+            </vac-table-row-cell>
+        </vac-table-row>
+    </vac-table>
+    <ng-template #emptyTable>
+        <vac-empty-table ></vac-empty-table>
+    </ng-template>
+</vac-flex>
