@@ -7,6 +7,7 @@ import { InputsModule } from './inputs/inputs.module';
 import { TableModule } from './table/table.module';
 import { RouterModule } from '@angular/router';
 import { ContainersModule } from './containers/containers.module';
+import { DialogsModule } from './dialogs/dialogs.module';
 
 
 
@@ -21,7 +22,8 @@ import { ContainersModule } from './containers/containers.module';
     InputsModule,
     TableModule,
     ContainersModule,
-    RouterModule
+    RouterModule,
+    DialogsModule
   ],
   exports: [
     HeaderComponent,
@@ -29,7 +31,8 @@ import { ContainersModule } from './containers/containers.module';
     SidebarComponent,
     InputsModule,
     TableModule,
-    ContainersModule
+    ContainersModule,
+    DialogsModule
   ]
 })
 export class ComponentsModule { }
