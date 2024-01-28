@@ -20,8 +20,8 @@ export class User {
         gender: string = null,
         publicPlace: string = null,
         number: number = null,
-        city: string,
-        fu: string,
+        city: string = null,
+        fu: string = null,
         allergies: Allergy[] = []
     ) {
         this.id = id;
