@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SwiftButtonDirective } from './swift-button.directive';
+import { VacButtonDirective } from './vac-button.directive';
 
 
 
 @NgModule({
   declarations: [
-    SwiftButtonDirective
+    VacButtonDirective
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    SwiftButtonDirective
+    VacButtonDirective
   ]
 })
 export class DirectivesModule { }
