@@ -1,0 +1,15 @@
+:host {
+    width: 100%;
+    display: block;
+}
+
+div.vac-flex {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-basis: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+  

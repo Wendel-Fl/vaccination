@@ -1,0 +1,18 @@
+:host {
+    width: 100%;
+    display: block;
+}
+
+table.vac-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 100%;
+    gap: 8px;
+    background-color: inherit;
+    > tbody {
+        width: 100%;
+    }
+}
