@@ -81,7 +81,7 @@ public class ScheduleService {
 
         LocalDateTime initialDateTime = scheduleDTO.dateTime();
 
-        for (int i = 1; i < dosage; i++) {
+        for (int i = 0; i < dosage; i++) {
             Schedule schedule = buildSchedule(scheduleDTO, user, vaccination);
             LocalDateTime currentDateTime = initialDateTime.plus((long) i * interval, frequency);
             schedule.setDateTime(currentDateTime);

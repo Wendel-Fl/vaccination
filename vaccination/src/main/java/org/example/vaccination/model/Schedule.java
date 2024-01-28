@@ -58,8 +58,6 @@ public class Schedule {
 
     public Schedule(ScheduleDTO scheduleDTO) {
         this.dateTime = scheduleDTO.dateTime();
-        this.status = scheduleDTO.status();
-        this.statusDate = scheduleDTO.statusDate();
         this.notes = scheduleDTO.notes();
         this.vaccination = scheduleDTO.vaccination();
         this.user = scheduleDTO.user();
