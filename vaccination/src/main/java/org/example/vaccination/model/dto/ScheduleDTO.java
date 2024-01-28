@@ -13,12 +13,6 @@ public record ScheduleDTO(
         @NotNull
         LocalDateTime dateTime,
 
-        @NotNull
-        Status status,
-
-        @NotNull
-        LocalDate statusDate,
-
         @NotBlank
         String notes,
 

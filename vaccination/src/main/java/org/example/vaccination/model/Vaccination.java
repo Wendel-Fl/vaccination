@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Getter
@@ -76,5 +77,15 @@ public class Vaccination {
         if (vaccinationDetailDTO.interval() != null) {
             this.interval = vaccinationDetailDTO.interval();
         }
+    }
+
+    public ChronoUnit getFrequencyUnit() {
+        return switch (this.frequency) {
+            case 1 -> ChronoUnit.DAYS;
+            case 2 -> ChronoUnit.WEEKS;
+            case 3 -> ChronoUnit.MONTHS;
+            case 4 -> ChronoUnit.YEARS;
+            default -> throw new RuntimeException("Invalid frequency unit");
+        };
     }
 }
