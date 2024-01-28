@@ -1,3 +1,8 @@
+:host {
+    width: 100%;
+    display: block;
+}
+
 table.vac-table {
     width: 100%;
     display: flex;
@@ -7,4 +12,7 @@ table.vac-table {
     flex-basis: 100%;
     gap: 8px;
     background-color: inherit;
+    > tbody {
+        width: 100%;
+    }
 }

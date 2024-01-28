@@ -5,6 +5,7 @@ import { VacTableHeaderComponent } from './vac-table-header/vac-table-header.com
 import { VacTableHeaderCellComponent } from './vac-table-header-cell/vac-table-header-cell.component';
 import { VacTableRowComponent } from './vac-table-row/vac-table-row.component';
 import { VacTableRowCellComponent } from './vac-table-row-cell/vac-table-row-cell.component';
+import { VacEmptyTableComponent } from './vac-empty-table/vac-empty-table.component';
 
 
 
@@ -14,7 +15,8 @@ import { VacTableRowCellComponent } from './vac-table-row-cell/vac-table-row-cel
     VacTableHeaderComponent,
     VacTableHeaderCellComponent,
     VacTableRowComponent,
-    VacTableRowCellComponent
+    VacTableRowCellComponent,
+    VacEmptyTableComponent
   ],
   imports: [
     CommonModule
@@ -24,7 +26,8 @@ import { VacTableRowCellComponent } from './vac-table-row-cell/vac-table-row-cel
     VacTableHeaderComponent,
     VacTableHeaderCellComponent,
     VacTableRowComponent,
-    VacTableRowCellComponent
+    VacTableRowCellComponent,
+    VacEmptyTableComponent
   ]
 })
 export class TableModule { }

@@ -1,4 +1,9 @@
-th.vac-table-row {
+:host {
+    width: 100%;
+    display: block;
+}
+
+tr.vac-table-row {
     flex: 1;
     display: flex;
     justify-content: center;
