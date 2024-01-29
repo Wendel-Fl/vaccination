@@ -57,7 +57,7 @@ button.vac-button.flat.ghost:hover, a.vac-button.flat.ghost:hover {
     background-color: var(--purple-primary);
 }
 
-div.vac-form-field > input {
+div.vac-form-field > input, div.vac-form-field > select {
     width: 100%;
     padding: 8px 16px;
     font-size: 0.875rem;
@@ -69,20 +69,20 @@ div.vac-form-field > input {
     transition: 0.2s all linear;
 }
   
-div.vac-form-field > input:hover {
+div.vac-form-field > input:hover, div.vac-form-field > select:hover {
     color: var(--gray-lighter);
     border: 2px solid var(--purple-quaternary);
     transition: 0.2s all linear;
 }
   
-div.vac-form-field > input:focus {
+div.vac-form-field > input:focus, div.vac-form-field > select:focus {
     color: var(--gray-darker);
     border: 2px solid var(--purple-primary);
     transition: 0.2s all linear;
 }
 
 .big-item {
-    grid-column: span 1/-1;
+    grid-column: 1/-1;
 }
 
 .md-item {
