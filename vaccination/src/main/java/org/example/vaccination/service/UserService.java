@@ -1,6 +1,7 @@
 package org.example.vaccination.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.vaccination.exception.dto.DataViolationException;
 import org.example.vaccination.model.Allergy;
 import org.example.vaccination.model.Schedule;
 import org.example.vaccination.model.User;
@@ -119,7 +120,6 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-
         boolean exists = userRepository.existsById(id);
 
         if (!exists) {

@@ -9,28 +9,28 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public record UserDTO(
-        @NotBlank
+        @NotBlank(message = "{name.required}")
         String name,
 
-        @NotNull
+        @NotNull(message = "{dateOfBirth.required}")
         LocalDate dateOfBirth,
 
-        @NotNull
+        @NotNull(message = "{gender.required}")
         Character gender,
 
-        @NotBlank
+        @NotBlank(message = "{publicPlace.required}")
         String publicPlace,
 
-        @NotNull
+        @NotNull(message = "{number.required}")
         Integer number,
 
-        @NotBlank
+        @NotBlank(message = "{district.required}")
         String district,
 
-        @NotBlank
+        @NotBlank(message = "{city.required}")
         String city,
 
-        @NotNull
+        @NotNull(message = "{state.required}")
         State state,
 
         Set<Allergy> allergies

@@ -1,6 +1,7 @@
 package org.example.vaccination.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.vaccination.exception.dto.DataViolationException;
 import org.example.vaccination.model.Allergy;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
@@ -58,6 +59,12 @@ public class AllergyService {
 
         if (!exists) {
             throw new RuntimeException(ALLERGY_NOT_FOUND);
+        }
+
+        Allergy allergy = allergyRepository.getReferenceById(id);
+
+        if (!allergy.getUsers().isEmpty()) {
+            throw new DataViolationException("Alergia não pode ser deletada porque está associada à um usuário");
         }
 
         allergyRepository.deleteById(id);
