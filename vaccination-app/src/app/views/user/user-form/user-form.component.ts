@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { UtilComponent } from '../../../core/utils/util.component';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { ActivatedRoute, ParamMap, Router, RouterModule } from '@angular/router';
 import { User } from '../../../core/models/user.model';
@@ -55,9 +55,17 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
     this.ufs$.unsubscribe();
   }
 
+  public get allergiesFormArray(): FormArray {
+    return this.userForm?.controls['allergies']?.value as FormArray;
+  }
+
   public onSave(): void {
-    if(this.userForm.valid) 
+    if(this.userForm.valid) {
+      this.userForm.controls['allergies'].setValue(
+        this.allergiesFormArray?.value?.map(formValue => new Allergy(formValue?.id, formValue?.name))
+      );
       this.saveUser();
+    }
     else
       this.toastr.info("Formulário inválido!");
   }
@@ -159,17 +167,25 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
         district: [user?.district, [Validators.required, Validators.maxLength(40)]],
         city: [user?.city, [Validators.required, Validators.maxLength(40)]],
         state: [user?.state, [Validators.required]],
-        allergies: [user?.allergies]
+        allergies: [this.createAllergiesFormArray(user?.allergies)]
       })
     );
+    console.log(this.allergiesFormArray)
   }
 
   private createAllergiesFormArray(userAllergies: Allergy[] = []): FormArray {
     const allergies: Allergy[] = this.allergies$.value;
-    return this.fb.array(
-      Object.keys(allergies)
-        .map(key => false)
-    );
+  
+    const formArrayControls = allergies?.map(allergy => {
+      const isSelected = userAllergies?.some(userAllergy => userAllergy?.id === allergy?.id);
+      return this.fb.group({
+        id: [allergy?.id],
+        name: [allergy?.name],
+        selected: [isSelected],
+      });
+    });
+  
+    return this.fb.array(formArrayControls);
   }
 
   private findAllergies(): void {

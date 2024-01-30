@@ -41,12 +41,16 @@
                         Gênero é <strong>obrigatório</strong>
                     </vac-form-field-error>
                 </vac-form-field>
-                <vac-form-field class="md-item" *ngIf="allergies$ | async as allergies">
-                    <vac-form-field-label>Alergias</vac-form-field-label>
-                    <select>
-                        <option *ngFor="let allergy of allergies" [value]="allergy?.id">{{ allergy?.name }}</option>
-                    </select>
-                </vac-form-field>
+                <vac-grid class="big-item">
+                    <ng-container formArrayName="allergies">
+                        <div *ngFor="let allergy of allergiesFormArray?.controls; let i = index" [formGroupName]="i">
+                            <label>
+                                {{ allergy?.get('name')?.value }}
+                            </label>
+                            <input type="checkbox" [formControl]="getFormControl(allergy?.get('selected'))" />
+                        </div>
+                    </ng-container>
+                </vac-grid>
                 <vac-form-field class="md-item">
                     <vac-form-field-label>Rua</vac-form-field-label>
                     <input 
@@ -113,9 +117,9 @@
             </vac-grid>
             <vac-flex></vac-flex>
             <vac-flex justify="center" align="center" gap="16">
-                <a vacButton routerLink="/user">Voltar</a>
+                <a vacButton="flat-ghost" routerLink="/user">Voltar</a>
                 <button 
-                    vacButton 
+                    vacButton="flat-ghost"  
                     (click)="onClickDelete()" 
                     type="button"
                     *ngIf="!(newUser$ | async)"
@@ -123,7 +127,7 @@
                     Deletar Usuário
                 </button>
                 <button 
-                    vacButton 
+                    vacButton="flat" 
                     (click)="onSave()" 
                     type="button"
                 >

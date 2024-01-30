@@ -1,1 +1,32 @@
-<p>schedule-list works!</p>
+<vac-flex mainAxis="column" gap="32">
+    <vac-flex justify="space-between" align="center">
+        <h1>Agendas</h1>
+        <a vacButton="flat" routerLink="/schedule/form/0">Cadastrar Agenda</a>
+    </vac-flex>
+    <vac-table *ngIf="schedules$ | async as schedules; else emptyTable">
+        <vac-table-header>
+            <vac-table-header-cell>ID</vac-table-header-cell>
+            <vac-table-header-cell>Vacina</vac-table-header-cell>
+            <vac-table-header-cell>Usuário</vac-table-header-cell>
+            <vac-table-header-cell>Status</vac-table-header-cell>
+            <vac-table-header-cell>Ações</vac-table-header-cell>
+        </vac-table-header>
+        <vac-table-row *ngFor="let schedule of schedules">
+            <vac-table-row-cell>{{ schedule?.id }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ schedule?.vaccination?.title ?? 'Não informado' }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ schedule?.user?.name ?? 'Não informado' }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ getStatusDescription(schedule?.status) }}</vac-table-row-cell>
+            <vac-table-row-cell>
+                <button 
+                    vacButton="flat" 
+                    (click)="onClickEdit(schedule?.id)" 
+                    type="button"
+                >
+                </button>
+            </vac-table-row-cell>
+        </vac-table-row>
+    </vac-table>
+    <ng-template #emptyTable>
+        <vac-empty-table></vac-empty-table>
+    </ng-template>
+</vac-flex>

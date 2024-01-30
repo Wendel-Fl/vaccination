@@ -70,9 +70,9 @@
             </vac-grid>
             <vac-flex></vac-flex>
             <vac-flex justify="center" align="center" gap="16">
-                <a vacButton routerLink="/vaccine">Voltar</a>
+                <a vacButton="flat-ghost" routerLink="/vaccine">Voltar</a>
                 <button 
-                    vacButton 
+                    vacButton="flat-ghost"  
                     (click)="onClickDelete()" 
                     type="button"
                     *ngIf="!(newVaccine$ | async)"
@@ -80,7 +80,7 @@
                     Deletar Vacina
                 </button>
                 <button 
-                    vacButton 
+                    vacButton="flat" 
                     (click)="onSave()" 
                     type="button"
                 >

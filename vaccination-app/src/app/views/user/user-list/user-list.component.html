@@ -1,7 +1,7 @@
 <vac-flex mainAxis="column" gap="32">
     <vac-flex justify="space-between" align="center">
         <h1>Usuários</h1>
-        <a vacButton routerLink="/user/form/0">Cadastrar Usuário</a>
+        <a vacButton="flat" routerLink="/user/form/0">Cadastrar Usuário</a>
     </vac-flex>
     <vac-table *ngIf="users$ | async as users; else emptyTable">
         <vac-table-header>
@@ -14,22 +14,22 @@
         <vac-table-row *ngFor="let user of users">
             <vac-table-row-cell>{{ user?.id }}</vac-table-row-cell>
             <vac-table-row-cell>{{ user?.name }}</vac-table-row-cell>
-            <vac-table-row-cell>{{ user?.gender }}</vac-table-row-cell>
-            <vac-table-row-cell>{{ user?.dateOfBirth }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ user?.gender === 'M' ? 'Masculino' : 'Feminino' }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ user?.dateOfBirth | date: 'dd/MM/YYYY' }}</vac-table-row-cell>
             <vac-table-row-cell>
                 <button 
-                    vacButton 
+                    vacButton="icon"
+                    vacButtonIcon="delete"
                     (click)="onClickDelete(user?.id)" 
                     type="button"
                 >
-                    Deletar Alergia
                 </button>
                 <button 
-                    vacButton 
+                    vacButton="icon"
+                    vacButtonIcon="edit"
                     (click)="onClickEdit(user?.id)" 
                     type="button"
                 >
-                    Editar Alergia
                 </button>
             </vac-table-row-cell>
         </vac-table-row>

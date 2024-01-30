@@ -1,7 +1,7 @@
 <vac-flex mainAxis="column" gap="32">
     <vac-flex justify="space-between" align="center">
         <h1>Vacinas</h1>
-        <a vacButton routerLink="/vaccine/form/0">Cadastrar Vacina</a>
+        <a vacButton="flat" routerLink="/vaccine/form/0">Cadastrar Vacina</a>
     </vac-flex>
     <vac-table *ngIf="vaccines$ | async as vaccines; else emptyTable">
         <vac-table-header>
@@ -16,18 +16,18 @@
             <vac-table-row-cell>{{ vaccine?.description }}</vac-table-row-cell>
             <vac-table-row-cell>
                 <button 
-                    vacButton 
+                    vacButton="icon"
+                    vacButtonIcon="delete" 
                     (click)="onClickDelete(vaccine?.id)" 
                     type="button"
                 >
-                    Deletar Vacina
                 </button>
                 <button 
-                    vacButton 
+                    vacButton="icon"
+                    vacButtonIcon="edit" 
                     (click)="onClickEdit(vaccine?.id)" 
                     type="button"
                 >
-                    Editar Vacina
                 </button>
             </vac-table-row-cell>
         </vac-table-row>

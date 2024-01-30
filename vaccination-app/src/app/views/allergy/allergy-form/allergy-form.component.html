@@ -21,9 +21,9 @@
                 </vac-form-field>
             </vac-grid>
             <vac-flex justify="center" align="center" gap="16">
-                <a vacButton routerLink="/allergy">Voltar</a>
+                <a vacButton="flat-ghost" routerLink="/allergy">Voltar</a>
                 <button 
-                    vacButton 
+                    vacButton="flat-ghost" 
                     (click)="onClickDelete()" 
                     type="button"
                     *ngIf="!(newAllergy$ | async)"
@@ -31,7 +31,7 @@
                     Deletar Alergia
                 </button>
                 <button 
-                    vacButton 
+                    vacButton="flat" 
                     (click)="onSave()" 
                     type="button"
                 >
