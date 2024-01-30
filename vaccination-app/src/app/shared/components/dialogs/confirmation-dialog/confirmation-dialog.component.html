@@ -1,8 +1,7 @@
 <vac-flex mainAxis="column" justify="center" align="center" gap="21">
-    <span *ngIf="iconClass" [class]="iconClass"></span>
     <h2 *ngIf="confirmationText$ | async as text">{{ text }}</h2>
     <vac-flex justify="space-between" align="center" gap="8">
-        <button vacButton (click)="onClickOption(true)" type="button">Sim</button>
-        <button vacButton (click)="onClickOption(false)" type="button">Não</button>
+        <button vacButton="flat" (click)="onClickOption(true)" type="button">Sim</button>
+        <button vacButton="flat-ghost" (click)="onClickOption(false)" type="button">Não</button>
     </vac-flex>
 </vac-flex>

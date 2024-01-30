@@ -27,34 +27,52 @@ html, body {
 button.vac-button, a.vac-button {
     transition: 0.2s all linear;
     cursor: pointer;
-}
-
-button.vac-button.flat, a.vac-button.flat {
-    min-width: 180px;
-    max-width: 320px;
-    padding: 8px 16px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: white;
-    text-decoration: none;
-    background-color: var(--purple-primary);
-    border: 2px solid var(--purple-primary);
-    border-radius: 8px;
-}
-
-button.button.vac-button.flat.ghost, a.vac-button.flat.ghost {
-    color: var(--purple-primary);
-    background-color: white;
-}
-
-button.vac-button.flat:hover, a.vac-button.flat:hover {
-    color: var(--purple-primary);
-    background-color: white;
-}
-
-button.vac-button.flat.ghost:hover, a.vac-button.flat.ghost:hover {
-    color: white;
-    background-color: var(--purple-primary);
+    &.flat {
+        min-width: 180px;
+        max-width: 320px;
+        padding: 8px 16px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: white;
+        text-decoration: none;
+        background-color: var(--purple-primary);
+        border: 2px solid var(--purple-primary);
+        border-radius: 8px;
+        &.ghost {
+            color: var(--purple-primary);
+            background-color: white;
+            &:hover {
+                color: white;
+                background-color: var(--purple-primary);
+            }
+        }
+        &:hover {
+            color: var(--purple-primary);
+            background-color: white;
+        }
+    }
+    &.icon {
+        width: 36px;
+        height: 36px;
+        padding: 4px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-color: inherit;
+        background-origin: content-box;
+        border: 2px solid white;
+        border-radius: 18px;
+        &.edit {
+            background-image: url('./assets/images/icons/edit.png');    
+        }
+        &.delete {
+            background-image: url('./assets/images/icons/delete.png');    
+        }
+        &:hover {
+            border: 2px solid var(--gray-dark);
+            background-color: var(--gray-lighter);
+        }
+    }
 }
 
 div.vac-form-field > input, div.vac-form-field > select {
@@ -64,21 +82,19 @@ div.vac-form-field > input, div.vac-form-field > select {
     font-weight: 500;
     color: var(--gray-light);
     outline: 0;
-    border: 2px solid var(--gray-darker);
+    border: 2px solid var(--gray-light);
     border-radius: 8px;
     transition: 0.2s all linear;
-}
-  
-div.vac-form-field > input:hover, div.vac-form-field > select:hover {
-    color: var(--gray-lighter);
-    border: 2px solid var(--purple-quaternary);
-    transition: 0.2s all linear;
-}
-  
-div.vac-form-field > input:focus, div.vac-form-field > select:focus {
-    color: var(--gray-darker);
-    border: 2px solid var(--purple-primary);
-    transition: 0.2s all linear;
+    &:hover {
+        color: var(--gray-lighter);
+        border: 2px solid var(--purple-quaternary);
+        transition: 0.2s all linear;
+    }
+    &:focus {
+        color: var(--gray-darker);
+        border: 2px solid var(--purple-primary);
+        transition: 0.2s all linear;
+    }
 }
 
 .big-item {
