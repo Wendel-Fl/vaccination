@@ -3,7 +3,7 @@ import { UtilComponent } from '../../../core/utils/util.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VaccineService } from '../../../core/services/vaccine.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, RouterModule } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../../shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Vaccine } from '../../../core/models/vaccine.model';
 import { BehaviorSubject } from 'rxjs';
@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-vaccine-form',
   standalone: true,
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './vaccine-form.component.html',
   styleUrl: './vaccine-form.component.scss'
 })
