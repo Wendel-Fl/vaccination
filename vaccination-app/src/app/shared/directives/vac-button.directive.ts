@@ -1,12 +1,12 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[vacButton]'
 })
-export class VacButtonDirective {
+export class VacButtonDirective implements OnInit {
 
   @Input()
-  public vacButtonType: 'flat' | 'flat-ghost' | 'icon' = 'flat';
+  public vacButton?: 'flat' | 'flat-ghost' | 'icon' = 'flat';
 
   @Input()
   public vacButtonIcon?: string = '';
@@ -15,12 +15,14 @@ export class VacButtonDirective {
     private renderer: Renderer2,
     private elementRef: ElementRef
   ) { 
-    console.log(this.vacButtonType)
+  }
+
+  ngOnInit(): void {
     this.renderer.setAttribute(this.elementRef.nativeElement, 'class', this.buildClasses().trim());
   }
 
   private buildClasses(): string {
-    return `vac-button ${this.vacButtonType.split('-').join(' ')} ${this.vacButtonType === 'icon' ? this.vacButtonIcon : ''}`;
+    return `vac-button ${this.vacButton.split('-').join(' ')} ${this.vacButton === 'icon' ? this.vacButtonIcon : ''}`;
   }
 
 }

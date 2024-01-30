@@ -10,14 +10,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record ScheduleDTO(
-        @NotNull
+        @NotNull(message = "{dateTime.required}")
         LocalDateTime dateTime,
 
-        @NotBlank
         String notes,
 
+        @NotNull(message = "{vaccination.required}")
         Vaccination vaccination,
 
+        @NotNull(message = "{user.required}")
         User user
 ) {
 }

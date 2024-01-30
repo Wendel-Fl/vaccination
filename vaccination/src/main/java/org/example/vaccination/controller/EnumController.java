@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping(path = "enums")
 public class EnumController {
 
-    private EnumService enumService;
+    private final EnumService enumService;
 
     @GetMapping(path = "/{name}")
     public ResponseEntity<List<EnumDTO>> getEnums(

@@ -31,7 +31,7 @@ export class ScheduleService {
 
   public findAll(filter: ScheduleFilter): Observable<Schedule[]> {
     return this.http.get<Schedule[]>(
-      `${this.url}/all?status=${filter.status}&date=${moment(Date.toString()).format('MM-dd-YYYY')}&hour=${filter.hour}`
+      `${this.url}/all`
     );
   }
 

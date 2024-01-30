@@ -10,7 +10,7 @@ export class User {
     public number: number;
     public district: string;
     public city: string;
-    public fu: string;
+    public state: string;
     public allergies: Allergy[];
 
     constructor(
@@ -21,7 +21,7 @@ export class User {
         publicPlace: string = null,
         number: number = null,
         city: string = null,
-        fu: string = null,
+        state: string = null,
         allergies: Allergy[] = []
     ) {
         this.id = id;
@@ -31,7 +31,7 @@ export class User {
         this.publicPlace = publicPlace;
         this.number = number;
         this.city = city;
-        this.fu = fu;
+        this.state = state;
         this.allergies = allergies;
     }
 

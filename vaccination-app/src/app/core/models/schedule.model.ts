@@ -4,8 +4,7 @@ import { Vaccine } from "./vaccine.model";
 export class Schedule {
 
     public id: number;
-    public date: Date;
-    public hour: string;
+    public dateTime: Date;
     public status: string;
     public statusDate: string;
     public note: string;
@@ -14,8 +13,7 @@ export class Schedule {
 
     constructor(
         id: number = null,
-        date: Date = null,
-        hour: string = null,
+        dateTime: Date = null,
         status: string = null,
         statusDate: string = null,
         note: string = null,
@@ -23,8 +21,7 @@ export class Schedule {
         vaccination: Vaccine = null
     ) {
         this.id = id;
-        this.date = date;
-        this.hour = hour;
+        this.dateTime = dateTime;
         this.status = status;
         this.statusDate = statusDate;
         this.note = note;

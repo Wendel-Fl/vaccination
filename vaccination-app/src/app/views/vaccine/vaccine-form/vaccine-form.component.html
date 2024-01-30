@@ -1,1 +1,92 @@
-<p>vaccine-form works!</p>
+<vac-flex>
+    <form *ngIf="vaccineForm$ | async as vaccineForm" [formGroup]="vaccineForm">
+        <h1>
+            {{ (newVaccine$ | async) ? 'Nova Vacina' : 'Vacina' }}
+        </h1>
+        <vac-flex mainAxis="column" justify="center" gap="32">
+            <vac-grid>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Título da Vacina</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Título da Vacina"
+                        formControlName="title"
+                    />
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['title']?.touched && vaccineForm?.controls['title']?.errors?.['required']">
+                        Título da Vacina é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['title']?.errors?.['maxlength']">
+                        Máximo de <strong>60 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field class="big-item">
+                    <vac-form-field-label>Descrição da Vacina</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Descrição da Vacina"
+                        formControlName="description"
+                    />
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['description']?.touched && vaccineForm?.controls['description']?.errors?.['required']">
+                        Descrição da Vacina é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['description']?.errors?.['maxlength']">
+                        Máximo de <strong>200 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field>
+                    <vac-form-field-label>Dosagem</vac-form-field-label>
+                    <input 
+                        type="number"
+                        placeholder="Dosagem da Vacina"
+                        formControlName="dosage"
+                    />
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['dosage']?.touched && vaccineForm?.controls['description']?.errors?.['required']">
+                        Dosagem é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Frequência</vac-form-field-label>
+                    <select formControlName="frequency">
+                        <option value="1">Dias</option>
+                        <option value="2">Semanas</option>
+                        <option value="3">Meses</option>
+                        <option value="4">Anos</option>
+                    </select>
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['frequency']?.touched && vaccineForm?.controls['frequency']?.errors?.['required']">
+                        Frequência é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field>
+                    <vac-form-field-label>Intervalo</vac-form-field-label>
+                    <input 
+                        type="number"
+                        placeholder="Intervalo da Vacina"
+                        formControlName="interval"
+                    />
+                    <vac-form-field-error *ngIf="vaccineForm?.controls['interval']?.touched && vaccineForm?.controls['interval']?.errors?.['required']">
+                        Intervalo é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+            </vac-grid>
+            <vac-flex></vac-flex>
+            <vac-flex justify="center" align="center" gap="16">
+                <a vacButton="flat-ghost" routerLink="/vaccine">Voltar</a>
+                <button 
+                    vacButton="flat-ghost"  
+                    (click)="onClickDelete()" 
+                    type="button"
+                    *ngIf="!(newVaccine$ | async)"
+                >
+                    Deletar Vacina
+                </button>
+                <button 
+                    vacButton="flat" 
+                    (click)="onSave()" 
+                    type="button"
+                >
+                    Salvar Vacina
+                </button>
+            </vac-flex>
+        </vac-flex>
+    </form>
+</vac-flex>

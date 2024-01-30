@@ -6,23 +6,24 @@
         <vac-flex mainAxis="column" justify="center" gap="32">
             <vac-grid>
                 <vac-form-field class="md-item">
+                    <vac-form-field-label>Alergia</vac-form-field-label>
                     <input 
                         type="text"
                         placeholder="Alergia"
                         formControlName="name"
                     />
-                    <vac-form-field-error *ngIf="allergyForm?.touched && allergyForm?.errors?.['required']">
+                    <vac-form-field-error *ngIf="allergyForm?.controls['name']?.touched && allergyForm?.controls['name'].errors?.['required']">
                         O nome da alergia é <strong>obrigatório</strong>
                     </vac-form-field-error>
-                    <vac-form-field-error *ngIf="allergyForm?.errors?.['maxlength']">
+                    <vac-form-field-error *ngIf="allergyForm?.controls['name'].errors?.['maxlength']">
                         Máximo de <strong>40 caracteres</strong>
                     </vac-form-field-error>
                 </vac-form-field>
             </vac-grid>
             <vac-flex justify="center" align="center" gap="16">
-                <a vacButton routerLink="/allergy">Voltar</a>
+                <a vacButton="flat-ghost" routerLink="/allergy">Voltar</a>
                 <button 
-                    vacButton 
+                    vacButton="flat-ghost" 
                     (click)="onClickDelete()" 
                     type="button"
                     *ngIf="!(newAllergy$ | async)"
@@ -30,7 +31,7 @@
                     Deletar Alergia
                 </button>
                 <button 
-                    vacButton 
+                    vacButton="flat" 
                     (click)="onSave()" 
                     type="button"
                 >

@@ -1,1 +1,38 @@
-<p>vaccine-list works!</p>
+<vac-flex mainAxis="column" gap="32">
+    <vac-flex justify="space-between" align="center">
+        <h1>Vacinas</h1>
+        <a vacButton="flat" routerLink="/vaccine/form/0">Cadastrar Vacina</a>
+    </vac-flex>
+    <vac-table *ngIf="vaccines$ | async as vaccines; else emptyTable">
+        <vac-table-header>
+            <vac-table-header-cell>ID</vac-table-header-cell>
+            <vac-table-header-cell>Título</vac-table-header-cell>
+            <vac-table-header-cell>Descrição</vac-table-header-cell>
+            <vac-table-header-cell>Ações</vac-table-header-cell>
+        </vac-table-header>
+        <vac-table-row *ngFor="let vaccine of vaccines">
+            <vac-table-row-cell>{{ vaccine?.id }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ vaccine?.title }}</vac-table-row-cell>
+            <vac-table-row-cell>{{ vaccine?.description }}</vac-table-row-cell>
+            <vac-table-row-cell>
+                <button 
+                    vacButton="icon"
+                    vacButtonIcon="delete" 
+                    (click)="onClickDelete(vaccine?.id)" 
+                    type="button"
+                >
+                </button>
+                <button 
+                    vacButton="icon"
+                    vacButtonIcon="edit" 
+                    (click)="onClickEdit(vaccine?.id)" 
+                    type="button"
+                >
+                </button>
+            </vac-table-row-cell>
+        </vac-table-row>
+    </vac-table>
+    <ng-template #emptyTable>
+        <vac-empty-table></vac-empty-table>
+    </ng-template>
+</vac-flex>

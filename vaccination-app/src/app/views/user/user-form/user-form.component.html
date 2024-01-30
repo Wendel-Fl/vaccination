@@ -1,1 +1,139 @@
-<p>user-form works!</p>
+<vac-flex>
+    <form *ngIf="userForm$ | async as userForm" [formGroup]="userForm">
+        <h1>
+            {{ (newUser$ | async) ? 'Novo Usuário' : 'Usuário' }}
+        </h1>
+        <vac-flex mainAxis="column" justify="center" gap="32">
+            <vac-grid>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Nome do Usuário</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Nome do Usuário"
+                        formControlName="name"
+                    />
+                    <vac-form-field-error *ngIf="userForm?.controls['name']?.touched && userForm?.controls['name']?.errors?.['required']">
+                        O nome do usuário é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="userForm?.controls['name']?.errors?.['maxlength']">
+                        Máximo de <strong>40 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Data de nascimento</vac-form-field-label>
+                    <input 
+                        type="date"
+                        placeholder="Data de Nascimento"
+                        formControlName="dateOfBirth"
+                    />
+                    <vac-form-field-error *ngIf="userForm?.controls['dateOfBirth']?.touched && userForm?.controls['dateOfBirth']?.errors?.['required']">
+                        A data de nascimento é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field>
+                    <vac-form-field-label>Gênero</vac-form-field-label>
+                    <select formControlName="gender">
+                        <option value="default">Selecione uma opção</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                    <vac-form-field-error *ngIf="userForm?.controls['gender']?.touched && userForm?.controls['gender']?.errors?.['required']">
+                        Gênero é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-grid class="big-item">
+                    <ng-container formArrayName="allergies">
+                        <div *ngFor="let allergy of allergiesFormArray?.controls; let i = index" [formGroupName]="i">
+                            <label>
+                                {{ allergy?.get('name')?.value }}
+                            </label>
+                            <input type="checkbox" [formControl]="getFormControl(allergy?.get('selected'))" />
+                        </div>
+                    </ng-container>
+                </vac-grid>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Rua</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Rua"
+                        formControlName="publicPlace"
+                    />
+                    <vac-form-field-error *ngIf="userForm?.controls['publicPlace']?.touched && userForm?.controls['publicPlace']?.errors?.['required']">
+                        Rua é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="userForm?.controls['publicPlace']?.errors?.['maxlength']">
+                        Máximo de <strong>60 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Bairro</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Bairro"
+                        formControlName="district"
+                    />
+                    <vac-form-field-error *ngIf="userForm?.controls['district']?.touched && userForm?.controls['district']?.errors?.['required']">
+                        Bairro é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="userForm?.controls['district']?.errors?.['maxlength']">
+                        Máximo de <strong>40 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field>
+                    <vac-form-field-label>Número</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Número"
+                        formControlName="number"
+                    />
+                    <vac-form-field-error *ngIf="userForm?.controls['number']?.touched && userForm?.controls['number']?.errors?.['required']">
+                        Número é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field class="md-item">
+                    <vac-form-field-label>Cidade</vac-form-field-label>
+                    <input 
+                        type="text"
+                        placeholder="Cidade"
+                        formControlName="city"
+                    />
+                    <vac-form-field-error *ngIf="userForm?.controls['city']?.touched && userForm?.controls['city']?.errors?.['required']">
+                        Cidade é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                    <vac-form-field-error *ngIf="userForm?.controls['city']?.errors?.['maxlength']">
+                        Máximo de <strong>40 caracteres</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+                <vac-form-field *ngIf="ufs$ | async as ufs">
+                    <vac-form-field-label>Estado</vac-form-field-label>
+                    <select formControlName="state">
+                        <option value="default">Selecione uma opção</option>
+                        <option *ngFor="let uf of ufs" [value]="uf?.name">{{ uf?.description }}</option>
+                    </select>
+                    <vac-form-field-error *ngIf="userForm?.controls['state']?.touched && userForm?.controls['state']?.errors?.['required']">
+                        Estado é <strong>obrigatório</strong>
+                    </vac-form-field-error>
+                </vac-form-field>
+            </vac-grid>
+            <vac-flex></vac-flex>
+            <vac-flex justify="center" align="center" gap="16">
+                <a vacButton="flat-ghost" routerLink="/user">Voltar</a>
+                <button 
+                    vacButton="flat-ghost"  
+                    (click)="onClickDelete()" 
+                    type="button"
+                    *ngIf="!(newUser$ | async)"
+                >
+                    Deletar Usuário
+                </button>
+                <button 
+                    vacButton="flat" 
+                    (click)="onSave()" 
+                    type="button"
+                >
+                    Salvar Usuário
+                </button>
+            </vac-flex>
+        </vac-flex>
+    </form>
+</vac-flex>
