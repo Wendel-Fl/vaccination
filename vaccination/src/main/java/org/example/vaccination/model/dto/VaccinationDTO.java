@@ -4,19 +4,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record VaccinationDTO(
-        @NotBlank
+        @NotBlank(message = "{title.required}")
         String title,
 
-        @NotBlank
         String description,
 
-        @NotNull
+        @NotNull(message = "{dosage.required}")
         Integer dosage,
 
-        @NotNull
+        @NotNull(message = "{frequency.required}")
         Integer frequency,
 
-        @NotNull
+        @NotNull(message = "{interval.required}")
         Integer interval
 ) {
 }
