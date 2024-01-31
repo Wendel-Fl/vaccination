@@ -63,7 +63,8 @@ public class User {
     @Setter
     @OneToMany(
             mappedBy = "user",
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
     )
     @JsonManagedReference(value = "schedule-user")
     @JsonIgnore
