@@ -19,9 +19,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query(
             "FROM Schedule sc " +
             "INNER JOIN Users u ON sc.user.id = u.id " +
-            "WHERE COALESCE(:status, null) IS NULL OR sc.status = :status " +
-            "OR (COALESCE(sc.dateTime, null) IS NULL OR sc.dateTime >= :initialDate )" +
-            "AND (COALESCE(sc.dateTime, null) IS NULL OR sc.dateTime <= :finalDate )" +
+            "WHERE (:status IS NULL OR sc.status = :status) " +
+            "AND ((COALESCE(:initialDate, NULL) IS NULL OR sc.dateTime >= :initialDate )" +
+            "AND (COALESCE(:finalDate, NULL) IS NULL OR sc.dateTime <= :finalDate ))" +
             "ORDER BY " +
             "(CASE " +
             "   WHEN sc.status = 'SCHEDULED' THEN 1 " +
