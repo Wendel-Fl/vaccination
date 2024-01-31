@@ -9,22 +9,19 @@ import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import org.example.vaccination.repository.ScheduleRepository;
 import org.example.vaccination.repository.UserRepository;
 import org.example.vaccination.repository.VaccinationRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.vaccination.model.Status.SCHEDULED;
+import static org.example.vaccination.model.Status.*;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
     private static final String USER_NOT_FOUND = "User not found";
 
@@ -100,6 +97,34 @@ public class ScheduleService {
 
         Schedule schedule = scheduleRepository.getReferenceById(scheduleDetailDTO.id());
         schedule.updateInfo(scheduleDetailDTO);
+        return schedule;
+    }
+
+    public Schedule scheduleCancelled(ScheduleDetailDTO scheduleDetailDTO) {
+        boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
+
+        if (!exists) {
+            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+        }
+
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleDetailDTO.id());
+        schedule.setStatus(CANCELLED);
+        schedule.setStatusDate(LocalDate.now());
+
+        return schedule;
+    }
+
+    public Schedule scheduleCarriedOut(ScheduleDetailDTO scheduleDetailDTO) {
+        boolean exists = scheduleRepository.existsById(scheduleDetailDTO.id());
+
+        if (!exists) {
+            throw new RuntimeException(SCHEDULE_NOT_FOUND);
+        }
+
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleDetailDTO.id());
+        schedule.setStatus(CARRIED_OUT);
+        schedule.setStatusDate(LocalDate.now());
+
         return schedule;
     }
 

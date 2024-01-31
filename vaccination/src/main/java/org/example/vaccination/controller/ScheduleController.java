@@ -9,10 +9,8 @@ import org.example.vaccination.service.ScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -57,6 +55,24 @@ public class ScheduleController {
         return ResponseEntity.ok(new ScheduleDetailDTO(schedule));
     }
 
+    @PutMapping(path = "/schedule-cancelled")
+    @Transactional
+    public ResponseEntity<ScheduleDetailDTO> scheduleCancelled(
+            @RequestBody @Valid ScheduleDetailDTO scheduleDetailDTO
+    ) {
+        Schedule schedule = scheduleService.scheduleCancelled(scheduleDetailDTO);
+        return ResponseEntity.ok(new ScheduleDetailDTO(schedule));
+    }
+
+    @PutMapping(path = "/schedule-carried-out")
+    @Transactional
+    public ResponseEntity<ScheduleDetailDTO> scheduleCarriedOut(
+            @RequestBody @Valid ScheduleDetailDTO scheduleDetailDTO
+    ) {
+        Schedule schedule = scheduleService.scheduleCarriedOut(scheduleDetailDTO);
+        return ResponseEntity.ok(new ScheduleDetailDTO(schedule));
+    }
+
     @PutMapping(path = "attach-vaccination")
     @Transactional
     public ResponseEntity<ScheduleDetailDTO> attachVaccination(
@@ -65,6 +81,8 @@ public class ScheduleController {
         Schedule schedule = scheduleService.attachVaccination(scheduleDetailDTO);
         return ResponseEntity.ok(new ScheduleDetailDTO(schedule));
     }
+
+
 
     @DeleteMapping(path = "/{id}")
     @Transactional

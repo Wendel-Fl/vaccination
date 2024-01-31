@@ -42,8 +42,7 @@ public class Vaccination {
 
     @OneToMany(
             mappedBy = "vaccination",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            fetch = FetchType.LAZY
     )
     @JsonManagedReference(value = "schedule-vaccination")
     @JsonIgnore
@@ -79,6 +78,7 @@ public class Vaccination {
         }
     }
 
+    @JsonIgnore
     public ChronoUnit getFrequencyUnit() {
         return switch (this.frequency) {
             case 1 -> ChronoUnit.DAYS;

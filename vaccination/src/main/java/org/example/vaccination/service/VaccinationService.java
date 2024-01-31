@@ -1,6 +1,7 @@
 package org.example.vaccination.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.vaccination.exception.dto.DataViolationException;
 import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
@@ -55,11 +56,16 @@ public class VaccinationService {
     }
 
     public void deleteVaccine(Long id) {
-
         boolean exists = vaccinationRepository.existsById(id);
 
         if (!exists) {
             throw new RuntimeException(VACCINATION_NOT_FOUND);
+        }
+
+        Vaccination vaccination = vaccinationRepository.getReferenceById(id);
+
+        if (!vaccination.getSchedules().isEmpty()) {
+            throw new DataViolationException("Vacina não pode ser deletada porque está associada à um agendamento");
         }
 
         vaccinationRepository.deleteById(id);

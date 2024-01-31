@@ -13,9 +13,6 @@ import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.example.vaccination.model.Status.CANCELLED;
-import static org.example.vaccination.model.Status.CARRIED_OUT;
-
 @Getter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
@@ -45,13 +42,19 @@ public class Schedule {
     private String notes;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.DETACH
+    )
     @JoinColumn(name = "vacina_id", nullable = false)
     @JsonBackReference(value = "schedule-vaccination")
     private Vaccination vaccination;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.DETACH
+    )
     @JoinColumn(name = "usuario_id", nullable = false)
     @JsonBackReference(value = "schedule-user")
     private User user;
@@ -64,18 +67,6 @@ public class Schedule {
     }
 
     public void updateInfo(ScheduleDetailDTO scheduleDetailDTO) {
-        if (scheduleDetailDTO.dateTime() != null) {
-            this.dateTime = scheduleDetailDTO.dateTime();
-        }
-
-        if (scheduleDetailDTO.status() != null) {
-            this.status = scheduleDetailDTO.status();
-            if (this.status == CARRIED_OUT ||
-                    this.status == CANCELLED) {
-                this.statusDate = LocalDate.now();
-            }
-        }
-
         if (scheduleDetailDTO.notes() != null) {
             this.notes = scheduleDetailDTO.notes();
         }
