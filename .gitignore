@@ -1,2 +1,4 @@
 
 vaccination/src/main/resources/application.yaml
+
+vaccination-app/src/environments/environment.ts
