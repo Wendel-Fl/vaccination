@@ -3,6 +3,7 @@ package org.example.vaccination.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Schedule;
+import org.example.vaccination.model.Status;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import org.example.vaccination.service.ScheduleService;
@@ -10,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,8 +30,11 @@ public class ScheduleController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<ScheduleDetailDTO>> getAllSchedules() {
-        List<ScheduleDetailDTO> schedules = scheduleService.getAllSchedules();
+    public ResponseEntity<List<ScheduleDetailDTO>> getAllSchedules(
+            @RequestParam(name = "status", required = false) Status status,
+            @RequestParam(name = "dateTime", required = false) LocalDateTime dateTime
+    ) {
+        List<ScheduleDetailDTO> schedules = scheduleService.getAllSchedules(status, dateTime);
         return ResponseEntity.ok(schedules);
     }
 

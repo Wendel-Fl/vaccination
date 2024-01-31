@@ -2,6 +2,7 @@ package org.example.vaccination.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.vaccination.model.Schedule;
+import org.example.vaccination.model.Status;
 import org.example.vaccination.model.User;
 import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.ScheduleDTO;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.example.vaccination.model.Status.*;
@@ -45,9 +47,11 @@ public class ScheduleService {
         return scheduleRepository.getReferenceById(id);
     }
 
-    public List<ScheduleDetailDTO> getAllSchedules() {
+    public List<ScheduleDetailDTO> getAllSchedules(
+            Status status, LocalDateTime dateTime
+    ) {
         return scheduleRepository
-                .findAll()
+                .filterSchedule(status, dateTime)
                 .stream()
                 .map(ScheduleDetailDTO::new)
                 .toList();
