@@ -68,7 +68,6 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       this.saveSchedule();
     else
       this.toastr.info("Formulário inválido!");
-    console.log(this.scheduleForm)
   }
 
   public onClickDelete(): void {
@@ -177,10 +176,10 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
   private cancelSchedule(): void {
     this.scheduleService.cancel(this.buildScheduleFromFormValue())
       .subscribe({
-        next: (schedule: Schedule) => {
+        next: () => {
           this.toastr.success("Agenda cancelada");
           this.loading.hide();
-          this.router.navigate[`/schedule/form/${schedule?.id}`];
+          window.location.reload();
         },
         error: this.handleError
       });
@@ -189,10 +188,10 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
   private carryOutSchedule(): void {
     this.scheduleService.carryOut(this.buildScheduleFromFormValue())
     .subscribe({
-      next: (schedule: Schedule) => {
+      next: () => {
         this.toastr.success("Agenda realizada");
         this.loading.hide();
-        this.router.navigate[`/schedule/form/${schedule?.id}`];
+        window.location.reload();
       },
       error: this.handleError
     });
@@ -250,7 +249,6 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       this.users$.value.find(user => user?.id == formValues?.user),
       this.vaccines$.value.find(vaccine => vaccine?.id == formValues?.vaccination),
     );
-    console.log(formValues, schedule)
     return schedule;
   }
 

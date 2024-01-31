@@ -37,8 +37,8 @@ export class ScheduleService {
     return this.http.get<Schedule[]>(
       `${this.url}/all`
       +`?status${filter?.status ? filter?.status : ''}`
-      +`&initialDate=${filter?.initialDate ? moment(filter?.initialDate).format('dd-MM-YYYY') : ''}`
-      +`&finalDate=${filter?.finalDate ? moment(filter?.finalDate).format('dd-MM-YYYY') : ''}`
+      +`&initialDate=${filter?.initialDate ? moment(filter?.initialDate).format('yyyy-MM-DD') : ''}`
+      +`&finalDate=${filter?.finalDate ? moment(filter?.finalDate).format('yyyy-MM-DD') : ''}`
     );
   }
 

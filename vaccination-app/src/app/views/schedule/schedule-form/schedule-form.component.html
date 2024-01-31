@@ -87,7 +87,7 @@
                     vacButton="flat" 
                     (click)="onSave()" 
                     type="button"
-                    *ngIf="!((newSchedule$ | async) || (scheduleDone$ | async))"
+                    *ngIf="(newSchedule$ | async) || !(scheduleDone$ | async)"
                 >
                     Salvar Agenda
                 </button>

@@ -9,6 +9,7 @@ import { EnumService } from '../../../core/services/enum.service';
 import { Enum } from '../../../core/types/enum.type';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScheduleFilter } from '../../../core/types/filters.type';
+import moment from 'moment';
 
 @Component({
   selector: 'app-schedule-list',
@@ -56,10 +57,12 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
   }
 
   public getTodaySchedules(): void {
-    this.filterForm.reset();
-    this.filterForm.controls['initialDate'].setValue(new Date());
-    this.filterForm.controls['finalDate'].setValue(new Date());
-    this.loadScheduleStatus();
+    this.filterForm.patchValue({
+      status: '',
+      initialDate: moment(new Date()).format("yyyy-MM-DD"),
+      finalDate: moment(new Date()).format("yyyy-MM-DD")
+    });
+    this.loadSchedules();
   }
 
   public onClearFilter(): void {
