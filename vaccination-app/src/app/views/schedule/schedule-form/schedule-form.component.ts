@@ -1,7 +1,7 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { UtilComponent } from '../../../core/utils/util.component';
 import { SharedModule } from '../../../shared/shared.module';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { ScheduleService } from '../../../core/services/schedule.service';
 import { ActivatedRoute, ParamMap, Router, RouterModule } from '@angular/router';
@@ -33,7 +33,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
 
   public newSchedule$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
-  public canEdit$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public scheduleDone$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   private readonly SCHEDULE_STATUS: string = 'status';
 
@@ -42,7 +42,6 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     private vaccineService: VaccineService,
     private userService: UserService,
     private enumService: EnumService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     injector: Injector
@@ -60,13 +59,13 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     this.users$.unsubscribe();
     this.vaccines$.unsubscribe();
     this.status$.unsubscribe();
-    this.canEdit$.unsubscribe();
+    this.scheduleDone$.unsubscribe();
     this.newSchedule$.unsubscribe();
   }
 
   public onSave(): void {
     if(this.scheduleForm.valid) 
-      this.saveVaccine();
+      this.saveSchedule();
     else
       this.toastr.info("Formulário inválido!");
   }
@@ -80,38 +79,79 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     });
   }
 
+  public onClickCancel(): void {
+    if(this.scheduleForm.valid) {
+      this.dialog.open(ConfirmationDialogComponent, {
+        inputs: {
+          text: 'Confirma cancelamento da Agenda?<br> Os dados não poderão ser alterados depois',
+        },
+        onClose: (bool: any) => this.handleCancelConfirmation(bool),
+      });
+    }
+    else
+      this.toastr.info("Formulário inválido")
+  }
+
+  public onClickCarryOut(): void {
+    if(this.scheduleForm.valid) {
+      this.dialog.open(ConfirmationDialogComponent, {
+        inputs: {
+          text: 'Confirma realização da Agenda?<br> Os dados não poderão ser alterados depois',
+        },
+        onClose: (bool: any) => this.handleCarryOutConfirmation(bool),
+      });
+    }
+    else
+      this.toastr.info("Formulário inválido")
+  }
+
+  public getStatusDescription(name: string): string {
+    return this.status$.value?.find(status => status?.name === name)?.description ?? 'Não informado';
+  }
+
   private get scheduleForm(): FormGroup {
     return this.scheduleForm$.value;
   }
 
   private handleDeletionConfirmation = (bool: any): void => {
     if (bool) 
-      this.deleteVaccine();
+      this.deleteSchedule();
   };
 
-  private saveVaccine(): void {
+  private handleCancelConfirmation = (bool: any): void => {
+    if (bool) 
+      this.cancelSchedule();
+  };
+
+  private handleCarryOutConfirmation = (bool: any): void => {
+    if (bool) 
+      this.carryOutSchedule();
+  };
+
+  private saveSchedule(): void {
     this.loading.show();
     const id: number = this.scheduleForm.controls['id'].value;
+    const schedule: Schedule = this.buildScheduleFromFormValue();
     if(id)
-      this.updateVaccine();
+      this.updateSchedule(schedule);
     else
-      this.createVaccine();
+      this.createSchedule(schedule);
   }
 
-  private createVaccine(): void {
-    this.scheduleService.create(this.scheduleForm.value)
+  private createSchedule(schedule: Schedule): void {
+    this.scheduleService.create(schedule)
       .subscribe({
-        next: (schedule: Schedule) => {
-          this.toastr.success("Agenda cadastrada com sucesso!");
+        next: () => {
+          this.toastr.success("Agendas cadastradas com sucesso!");
           this.loading.hide();
-          this.router.navigate([`/schedule/form/${schedule?.id}`]);
+          this.router.navigate(['schedule']);
         },
         error: this.handleError
       })
   }
 
-  private updateVaccine(): void {
-    this.scheduleService.update(this.scheduleForm.value)
+  private updateSchedule(schedule: Schedule): void {
+    this.scheduleService.update(schedule)
     .subscribe({
       next: () => {
         this.toastr.success("Agenda atualizada com sucesso!");
@@ -121,7 +161,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     })
   }
 
-  private deleteVaccine(): void {
+  private deleteSchedule(): void {
     this.loading.show();
     this.scheduleService.deleteById(this.scheduleForm?.controls['id']?.value)
       .subscribe({
@@ -133,6 +173,30 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       })
   }
 
+  private cancelSchedule(): void {
+    this.scheduleService.cancel(this.buildScheduleFromFormValue())
+      .subscribe({
+        next: () => {
+          this.toastr.success("Agenda cancelada");
+          this.loading.hide();
+          window.location.reload();
+        },
+        error: this.handleError
+      });
+  }
+
+  private carryOutSchedule(): void {
+    this.scheduleService.carryOut(this.buildScheduleFromFormValue())
+    .subscribe({
+      next: () => {
+        this.toastr.success("Agenda realizada");
+        this.loading.hide();
+        window.location.reload();
+      },
+      error: this.handleError
+    });
+  }
+
   private handleRetrievedScheduleId(id: string): void {
     if(Number.isNaN(id) || Number(id) === 0){
       this.createScheduleForm();
@@ -140,15 +204,16 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     }
     else {
       this.newSchedule$.next(false);
-      this.findVaccineById(Number(id));
+      this.findScheduleById(Number(id));
     }
   }
 
-  private findVaccineById(id: number): void {
+  private findScheduleById(id: number): void {
     this.loading.show();
     this.scheduleService.findById(id)
       .subscribe({
         next: (schedule: Schedule) => {
+          this.scheduleDone$.next(schedule?.statusDate != null);
           this.createScheduleForm(schedule);
           this.loading.hide();
         },
@@ -157,11 +222,34 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
   }
 
   private createScheduleForm(schedule: Schedule = new Schedule()): void {
-    this.scheduleForm$.next(
-      this.fb.group({
-        
-      })
+    this.scheduleForm$.next(this.buildScheduleForm(schedule));
+  }
+
+  private buildScheduleForm(schedule: Schedule = new Schedule()): FormGroup {
+    const done: boolean = schedule?.statusDate != null;
+    return this.fb.group({
+      id: [schedule?.id],
+      dateTime: [{value: schedule?.dateTime, disabled: done}, [Validators.required]],
+      status: [{value: schedule?.status, disabled: true}],
+      statusDate: [{value: schedule?.statusDate, disabled: true}],
+      notes: [{value: schedule?.notes, disabled: done}, [Validators.required, Validators.maxLength(200)]],
+      user: [{value: schedule?.user?.id, disabled: done}, [Validators.required]],
+      vaccination: [{value: schedule?.vaccination?.id, disabled: done}, [Validators.required]]
+    });
+  }
+
+  private buildScheduleFromFormValue(): Schedule {
+    const formValues = this.scheduleForm.value;
+    const schedule = new Schedule(
+      formValues?.id,
+      formValues?.dateTime,
+      formValues?.status,
+      formValues?.statusDate,
+      formValues?.notes,
+      this.users$.value.find(user => user?.id == formValues?.user),
+      this.vaccines$.value.find(vaccine => vaccine?.id == formValues?.vaccination),
     );
+    return schedule;
   }
 
   private loadData(): void {

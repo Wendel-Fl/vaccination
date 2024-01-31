@@ -7,7 +7,7 @@ export class Schedule {
     public dateTime: Date;
     public status: string;
     public statusDate: string;
-    public note: string;
+    public notes: string;
     public user: User;
     public vaccination: Vaccine;
 
@@ -16,7 +16,7 @@ export class Schedule {
         dateTime: Date = null,
         status: string = null,
         statusDate: string = null,
-        note: string = null,
+        notes: string = null,
         user: User = null,
         vaccination: Vaccine = null
     ) {
@@ -24,7 +24,7 @@ export class Schedule {
         this.dateTime = dateTime;
         this.status = status;
         this.statusDate = statusDate;
-        this.note = note;
+        this.notes = notes;
         this.user = user;
         this.vaccination = vaccination;
     }

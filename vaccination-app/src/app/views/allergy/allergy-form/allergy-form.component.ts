@@ -24,7 +24,6 @@ export class AllergyFormComponent extends UtilComponent implements OnInit, OnDes
 
   constructor(
     private allergyService: AllergyService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     injector: Injector
@@ -42,7 +41,6 @@ export class AllergyFormComponent extends UtilComponent implements OnInit, OnDes
   }
 
   public onSave(): void {
-    console.log('la ele')
     if(this.allergyForm.valid) 
       this.saveAllergy();
     else
@@ -136,10 +134,7 @@ export class AllergyFormComponent extends UtilComponent implements OnInit, OnDes
 
   private createAllergyForm(allergy: Allergy = new Allergy()): void {
     this.allergyForm$.next(
-      this.fb.group({
-        id: [allergy?.id],
-        name: [allergy?.name, [Validators.required, Validators.maxLength(40)]]
-      })
+      this.buildAllergyForm(allergy)
     );
   }
 

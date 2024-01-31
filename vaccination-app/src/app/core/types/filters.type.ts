@@ -1,5 +1,5 @@
 export type ScheduleFilter = {
     status: string;
-    date: Date;
-    hour: string;
+    initialDate: Date;
+    finalDate: Date;
 }

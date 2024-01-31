@@ -34,7 +34,6 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
     private userService: UserService,
     private allergyService: AllergyService,
     private enumService: EnumService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     injector: Injector
@@ -45,7 +44,6 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
   public ngOnInit(): void {
     this.findAllergies();
     this.findUfs();
-    this.getRouteData();
   }
 
   public ngOnDestroy(): void {
@@ -55,17 +53,9 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
     this.ufs$.unsubscribe();
   }
 
-  public get allergiesFormArray(): FormArray {
-    return this.userForm?.controls['allergies']?.value as FormArray;
-  }
-
   public onSave(): void {
-    if(this.userForm.valid) {
-      this.userForm.controls['allergies'].setValue(
-        this.allergiesFormArray?.value?.map(formValue => new Allergy(formValue?.id, formValue?.name))
-      );
+    if(this.userForm.valid)
       this.saveUser();
-    }
     else
       this.toastr.info("Formulário inválido!");
   }
@@ -91,14 +81,15 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
   private saveUser(): void {
     this.loading.show();
     const id: number = this.userForm.controls['id'].value;
+    const user: User = this.buildUserFromFormValue();
     if(id)
-      this.updateUser();
+      this.updateUser(user);
     else
-      this.createUser();
+      this.createUser(user);
   }
 
-  private createUser(): void {
-    this.userService.create(this.userForm.value)
+  private createUser(user: User): void {
+    this.userService.create(user)
       .subscribe({
         next: (user: User) => {
           this.toastr.success("Usuário cadastrado com sucesso!");
@@ -106,18 +97,18 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
           this.router.navigate([`/user/form/${user?.id}`]);
         },
         error: this.handleError
-      })
+      });
   }
 
-  private updateUser(): void {
-    this.userService.update(this.userForm.value)
-    .subscribe({
-      next: () => {
-        this.toastr.success("Usuário atualizado com sucesso!");
-        this.loading.hide();
-      },
-      error: this.handleError
-    })
+  private updateUser(user: User): void {
+    this.userService.update(user)
+      .subscribe({
+        next: () => {
+          this.toastr.success("Usuário atualizado com sucesso!");
+          this.loading.hide();
+        },
+        error: this.handleError
+      });
   }
 
   private deleteUser(): void {
@@ -129,7 +120,7 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
           this.router.navigate(['/user']);
         },
         error: this.handleError
-      })
+      });
   }
 
   private handleRetrievedUserId(id: string): void {
@@ -156,43 +147,44 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
   }
 
   private createUserForm(user: User = new User()): void {
-    this.userForm$.next(
-      this.fb.group({
-        id: [user?.id],
-        name: [user?.name, [Validators.required, Validators.maxLength(40)]],
-        dateOfBirth: [user?.dateOfBirth, [Validators.required]],
-        gender: [user?.gender, [Validators.required]],
-        publicPlace: [user?.publicPlace, [Validators.required, Validators.maxLength(60)]],
-        number: [user?.number, [Validators.required]],
-        district: [user?.district, [Validators.required, Validators.maxLength(40)]],
-        city: [user?.city, [Validators.required, Validators.maxLength(40)]],
-        state: [user?.state, [Validators.required]],
-        allergies: [this.createAllergiesFormArray(user?.allergies)]
-      })
-    );
-    console.log(this.allergiesFormArray)
+    const userForm: FormGroup = this.buildUserForm(user);
+    const allergies: Allergy[] = this.allergies$.value;
+    if(allergies) {
+      userForm.addControl(
+        'allergies', this.fb.array(
+          allergies?.map(
+            allergy => user?.allergies?.find(userAllergy => userAllergy?.id === allergy?.id) != undefined
+          )
+        )
+      );
+    }
+    this.userForm$.next(userForm);
   }
 
-  private createAllergiesFormArray(userAllergies: Allergy[] = []): FormArray {
-    const allergies: Allergy[] = this.allergies$.value;
-  
-    const formArrayControls = allergies?.map(allergy => {
-      const isSelected = userAllergies?.some(userAllergy => userAllergy?.id === allergy?.id);
-      return this.fb.group({
-        id: [allergy?.id],
-        name: [allergy?.name],
-        selected: [isSelected],
-      });
-    });
-  
-    return this.fb.array(formArrayControls);
+  private buildUserFromFormValue(): User {
+    const formValue = this.userForm.value;
+    return new User(
+      formValue?.id,
+      formValue?.name,
+      formValue?.dateOfBirth,
+      formValue?.gender,
+      formValue?.publicPlace,
+      formValue?.number,
+      formValue?.city,
+      formValue?.state,
+      this.allergies$.value
+        ?.map((allergy: Allergy, index: number) => formValue?.allergies[index] ? allergy : null)
+        .filter(allergy => allergy != null)
+    );
   }
 
   private findAllergies(): void {
     this.allergyService.findAll()
       .subscribe({
         next: (allergies: Allergy[]) => {
-          this.allergies$.next(allergies);
+          if(allergies.length > 0)
+            this.allergies$.next(allergies);
+          this.getRouteData();
         },
         error: this.handleError
       });

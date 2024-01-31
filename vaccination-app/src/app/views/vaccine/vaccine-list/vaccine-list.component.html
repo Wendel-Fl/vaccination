@@ -15,20 +15,22 @@
             <vac-table-row-cell>{{ vaccine?.title }}</vac-table-row-cell>
             <vac-table-row-cell>{{ vaccine?.description }}</vac-table-row-cell>
             <vac-table-row-cell>
-                <button 
-                    vacButton="icon"
-                    vacButtonIcon="delete" 
-                    (click)="onClickDelete(vaccine?.id)" 
-                    type="button"
-                >
-                </button>
-                <button 
-                    vacButton="icon"
-                    vacButtonIcon="edit" 
-                    (click)="onClickEdit(vaccine?.id)" 
-                    type="button"
-                >
-                </button>
+                <vac-flex gap="16">
+                    <button 
+                        vacButton="icon"
+                        vacButtonIcon="delete"
+                        (click)="onClickDelete(vaccine?.id)" 
+                        type="button"
+                    >
+                    </button>
+                    <button 
+                        vacButton="icon"
+                        vacButtonIcon="edit"
+                        (click)="onClickEdit(vaccine?.id)" 
+                        type="button"
+                    >
+                    </button>
+                </vac-flex>
             </vac-table-row-cell>
         </vac-table-row>
     </vac-table>

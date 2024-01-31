@@ -3,6 +3,58 @@
         <h1>Agendas</h1>
         <a vacButton="flat" routerLink="/schedule/form/0">Cadastrar Agenda</a>
     </vac-flex>
+    <vac-flex mainAxis="column" justify="center" align="flex-start" gap="16">
+        <h4>Pesquisar</h4>
+        <form *ngIf="filterForm$ | async as filterForm" [formGroup]="filterForm">
+            <vac-grid>
+                <vac-form-field class="md-item" *ngIf="schedulesStatus$ | async as scheduleStatus">
+                    <vac-form-field-label>Status</vac-form-field-label>
+                    <select formControlName="status">
+                        <option *ngFor="let status of scheduleStatus" [value]="status?.name">{{ status?.description }}</option>
+                    </select>
+                </vac-form-field>
+                <vac-form-field>
+                    <vac-form-field-label>Data Inicial</vac-form-field-label>
+                    <input 
+                        type="date"
+                        placeholder="Data Inicial de Agendamento"
+                        formControlName="initialDate"
+                    />
+                </vac-form-field>
+                <vac-form-field>
+                    <vac-form-field-label>Data Final</vac-form-field-label>
+                    <input 
+                        type="date"
+                        placeholder="Data Final de Agendamento"
+                        formControlName="finalDate"
+                    />
+                </vac-form-field>
+                <vac-flex class="big-item" justify="flex-end" align="center" gap="16">
+                    <button 
+                        vacButton="flat-ghost"  
+                        (click)="getTodaySchedules()" 
+                        type="button"
+                    >
+                        Agendas de Hoje
+                    </button>
+                    <button 
+                        vacButton="flat-ghost"  
+                        (click)="onClearFilter()" 
+                        type="button"
+                    >
+                        Limpar Filtro
+                    </button>
+                    <button 
+                        vacButton="flat" 
+                        (click)="onApplyFilter()" 
+                        type="button"
+                    >
+                        Pesquisar
+                    </button>
+                </vac-flex>
+            </vac-grid>
+        </form>
+    </vac-flex>
     <vac-table *ngIf="schedules$ | async as schedules; else emptyTable">
         <vac-table-header>
             <vac-table-header-cell>ID</vac-table-header-cell>
@@ -15,10 +67,15 @@
             <vac-table-row-cell>{{ schedule?.id }}</vac-table-row-cell>
             <vac-table-row-cell>{{ schedule?.vaccination?.title ?? 'Não informado' }}</vac-table-row-cell>
             <vac-table-row-cell>{{ schedule?.user?.name ?? 'Não informado' }}</vac-table-row-cell>
-            <vac-table-row-cell>{{ getStatusDescription(schedule?.status) }}</vac-table-row-cell>
+            <vac-table-row-cell>
+                <span [class]="'schedule status ' + schedule?.status">
+                    {{ getStatusDescription(schedule?.status) }}
+                </span>
+            </vac-table-row-cell>
             <vac-table-row-cell>
                 <button 
-                    vacButton="flat" 
+                    vacButton="icon"
+                    vacButtonIcon="edit" 
                     (click)="onClickEdit(schedule?.id)" 
                     type="button"
                 >

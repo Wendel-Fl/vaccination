@@ -15,14 +15,18 @@ export class ScheduleService {
 
   private readonly SCHEDULE_PATH: string = "schedule";
 
+  private readonly CANCEL_PATH: string = "schedule-cancelled"
+
+  private readonly CARRY_OUT_PATH: string = "schedule-carried-out";
+
   constructor(
     private http: HttpClient
   ) { 
     this.url = `${environment.apiUrl}/${this.SCHEDULE_PATH}`;
   }
 
-  public create(schedule: Schedule): Observable<Schedule> {
-    return this.http.post<Schedule>(this.url, schedule);
+  public create(schedule: Schedule): Observable<Schedule[]> {
+    return this.http.post<Schedule[]>(this.url, schedule);
   }
 
   public findById(id: number): Observable<Schedule> {
@@ -32,6 +36,9 @@ export class ScheduleService {
   public findAll(filter: ScheduleFilter): Observable<Schedule[]> {
     return this.http.get<Schedule[]>(
       `${this.url}/all`
+      +`?status${filter?.status ? filter?.status : ''}`
+      +`&initialDate=${filter?.initialDate ? moment(filter?.initialDate).format('yyyy-MM-DD') : ''}`
+      +`&finalDate=${filter?.finalDate ? moment(filter?.finalDate).format('yyyy-MM-DD') : ''}`
     );
   }
 
@@ -41,6 +48,14 @@ export class ScheduleService {
 
   public deleteById(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
+  }
+
+  public carryOut(schedule: Schedule): Observable<Schedule> {
+    return this.http.put<Schedule>(`${this.url}/${this.CARRY_OUT_PATH}`, schedule);
+  }
+
+  public cancel(schedule: Schedule): Observable<Schedule> {
+    return this.http.put<Schedule>(`${this.url}/${this.CANCEL_PATH}`, schedule);
   }
 
 }
