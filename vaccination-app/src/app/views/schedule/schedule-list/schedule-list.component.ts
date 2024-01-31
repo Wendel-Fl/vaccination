@@ -94,8 +94,7 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
     this.scheduleService.findAll(filterValues)
       .subscribe({
         next: (schedules: Schedule[]) => {
-          if(schedules?.length > 0)
-            this.schedules$.next(schedules);
+          this.schedules$.next(schedules?.length > 0 ? schedules : null);
           this.loading.hide();
         },
         error: this.handleError

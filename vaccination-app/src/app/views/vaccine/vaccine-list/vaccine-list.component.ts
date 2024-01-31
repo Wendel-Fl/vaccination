@@ -69,8 +69,7 @@ export class VaccineListComponent extends UtilComponent implements OnInit, OnDes
     this.vaccineService.findAll()
       .subscribe({
         next: (vaccines: Vaccine[]) => {
-          if(vaccines?.length > 0)
-            this.vaccines$.next(vaccines);
+          this.vaccines$.next(vaccines?.length > 0 ? vaccines : null);
           this.loading.hide();
         },
         error: this.handleError
