@@ -22,6 +22,7 @@ export class User {
         number: number = null,
         city: string = null,
         state: string = null,
+        district: string = null,
         allergies: Allergy[] = []
     ) {
         this.id = id;
@@ -32,6 +33,7 @@ export class User {
         this.number = number;
         this.city = city;
         this.state = state;
+        this.district = district;
         this.allergies = allergies;
     }
 

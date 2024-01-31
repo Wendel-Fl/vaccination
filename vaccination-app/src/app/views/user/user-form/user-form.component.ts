@@ -172,6 +172,7 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
       formValue?.number,
       formValue?.city,
       formValue?.state,
+      formValue?.district,
       this.allergies$.value
         ?.map((allergy: Allergy, index: number) => formValue?.allergies[index] ? allergy : null)
         .filter(allergy => allergy != null)
