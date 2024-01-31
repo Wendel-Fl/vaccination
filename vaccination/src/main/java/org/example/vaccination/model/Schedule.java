@@ -26,7 +26,6 @@ public class Schedule {
     private Long id;
 
     @Column(name = "data_hora")
-    @Temporal(TemporalType.TIMESTAMP)
     @Setter
     private LocalDateTime dateTime;
 

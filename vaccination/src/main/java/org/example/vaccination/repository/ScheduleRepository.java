@@ -1,5 +1,6 @@
 package org.example.vaccination.repository;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.vaccination.model.Schedule;
 import org.example.vaccination.model.Status;
 import org.hibernate.annotations.Filter;
@@ -19,7 +20,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "FROM Schedule sc " +
             "INNER JOIN Users u ON sc.user.id = u.id " +
             "WHERE (:status IS NULL OR sc.status = :status) " +
-            "OR (timestamp(:dateTime) IS NULL OR timestamp(sc.dateTime) = timestamp(:dateTime)) " +
+            "OR (:initialDate IS NULL OR :finalDate IS NULL OR sc.dateTime BETWEEN :initialDate AND :finalDate) " +
             "ORDER BY " +
             "(CASE " +
             "   WHEN sc.status = 'SCHEDULED' THEN 1 " +
@@ -30,6 +31,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     )
     List<Schedule> filterSchedule(
             @Param("status") Status status,
-            @Param("dateTime") LocalDateTime dateTime
+            @Param("initialDate") @JsonFormat(pattern = "dd-MM-yyyy") LocalDateTime initialDate,
+            @Param("finalDate") @JsonFormat(pattern = "dd-MM-yyyy") LocalDateTime finalDate
             );
 }

@@ -48,10 +48,10 @@ public class ScheduleService {
     }
 
     public List<ScheduleDetailDTO> getAllSchedules(
-            Status status, LocalDateTime dateTime
+            Status status, LocalDateTime initialDate, LocalDateTime finalDate
     ) {
         return scheduleRepository
-                .filterSchedule(status, dateTime)
+                .filterSchedule(status, initialDate, finalDate)
                 .stream()
                 .map(ScheduleDetailDTO::new)
                 .toList();

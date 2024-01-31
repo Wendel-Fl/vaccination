@@ -32,9 +32,10 @@ public class ScheduleController {
     @GetMapping(path = "/all")
     public ResponseEntity<List<ScheduleDetailDTO>> getAllSchedules(
             @RequestParam(name = "status", required = false) Status status,
-            @RequestParam(name = "dateTime", required = false) LocalDateTime dateTime
+            @RequestParam(name = "initialDate", required = false) LocalDateTime initialDate,
+            @RequestParam(name = "finalDate", required = false) LocalDateTime finalDate
     ) {
-        List<ScheduleDetailDTO> schedules = scheduleService.getAllSchedules(status, dateTime);
+        List<ScheduleDetailDTO> schedules = scheduleService.getAllSchedules(status, initialDate, finalDate);
         return ResponseEntity.ok(schedules);
     }
 
