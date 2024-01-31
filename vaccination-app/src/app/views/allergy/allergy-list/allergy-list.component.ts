@@ -69,8 +69,7 @@ export class AllergyListComponent extends UtilComponent implements OnInit, OnDes
     this.allergyService.findAll()
       .subscribe({
         next: allergies => {
-          if(allergies?.length > 0)
-            this.allergies$.next(allergies);
+          this.allergies$.next(allergies?.length > 0 ? allergies : null);
           this.loading.hide();
         },
         error: this.handleError

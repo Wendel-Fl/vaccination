@@ -70,8 +70,7 @@ export class UserListComponent extends UtilComponent implements OnInit, OnDestro
     this.userService.findAll()
       .subscribe({
         next: (users: User[]) => {
-          if(users?.length > 0)
-            this.users$.next(users);
+          this.users$.next(users?.length > 0 ? users : null);
           this.loading.hide();
         },
         error: this.handleError
