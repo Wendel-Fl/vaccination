@@ -59,8 +59,8 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
   public getTodaySchedules(): void {
     this.filterForm.patchValue({
       status: '',
-      initialDate: moment(new Date()).format("yyyy-MM-DD"),
-      finalDate: moment(new Date()).format("yyyy-MM-DD")
+      initialDate: moment(new Date()).format("yyyy-MM-DD").concat("T00:00"),
+      finalDate: moment(new Date()).format("yyyy-MM-DD").concat("T23:59")
     });
     this.loadSchedules();
   }

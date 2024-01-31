@@ -34,11 +34,12 @@ export class ScheduleService {
   }
 
   public findAll(filter: ScheduleFilter): Observable<Schedule[]> {
+    console.log(filter)
     return this.http.get<Schedule[]>(
       `${this.url}/all`
-      +`?status${filter?.status ? filter?.status : ''}`
-      +`&initialDate=${filter?.initialDate ? moment(filter?.initialDate).format('yyyy-MM-DD') : ''}`
-      +`&finalDate=${filter?.finalDate ? moment(filter?.finalDate).format('yyyy-MM-DD') : ''}`
+      +`?status=${filter?.status ? filter?.status : ''}`
+      +`&initialDate=${filter?.initialDate ? filter?.initialDate?.toString().concat(':00') : ''}`
+      +`&finalDate=${filter?.finalDate ? filter?.finalDate?.toString().concat(':00') : ''}`
     );
   }
 
