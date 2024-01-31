@@ -3,7 +3,7 @@
         <h1>Agendas</h1>
         <a vacButton="flat" routerLink="/schedule/form/0">Cadastrar Agenda</a>
     </vac-flex>
-    <vac-flex mainAxis="column" justify="center" align="center" gap="16">
+    <vac-flex mainAxis="column" justify="center" align="flex-start" gap="16">
         <h4>Pesquisar</h4>
         <form *ngIf="filterForm$ | async as filterForm" [formGroup]="filterForm">
             <vac-grid>
@@ -13,7 +13,7 @@
                         <option *ngFor="let status of scheduleStatus" [value]="status?.name">{{ status?.description }}</option>
                     </select>
                 </vac-form-field>
-                <vac-form-field class="md-item">
+                <vac-form-field>
                     <vac-form-field-label>Data Inicial</vac-form-field-label>
                     <input 
                         type="date"
@@ -21,7 +21,7 @@
                         formControlName="initialDate"
                     />
                 </vac-form-field>
-                <vac-form-field class="md-item">
+                <vac-form-field>
                     <vac-form-field-label>Data Final</vac-form-field-label>
                     <input 
                         type="date"
@@ -74,7 +74,8 @@
             </vac-table-row-cell>
             <vac-table-row-cell>
                 <button 
-                    vacButton="flat" 
+                    vacButton="icon"
+                    vacButtonIcon="edit" 
                     (click)="onClickEdit(schedule?.id)" 
                     type="button"
                 >

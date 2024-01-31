@@ -8,6 +8,7 @@ import { ScheduleService } from '../../../core/services/schedule.service';
 import { EnumService } from '../../../core/services/enum.service';
 import { Enum } from '../../../core/types/enum.type';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScheduleFilter } from '../../../core/types/filters.type';
 
 @Component({
   selector: 'app-schedule-list',
@@ -29,7 +30,6 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
   constructor(
     private scheduleService: ScheduleService,
     private enumService: EnumService,
-    private fb: FormBuilder,
     private router: Router,
     injector: Injector
   ) {
@@ -87,7 +87,8 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
 
   private loadSchedules(): void {
     this.loading.show();
-    this.scheduleService.findAll(this.filterForm.value)
+    const filterValues: ScheduleFilter = this.filterForm?.value ?? null;
+    this.scheduleService.findAll(filterValues)
       .subscribe({
         next: (schedules: Schedule[]) => {
           if(schedules?.length > 0)

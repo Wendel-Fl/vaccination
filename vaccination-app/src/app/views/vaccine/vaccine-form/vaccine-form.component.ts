@@ -23,7 +23,6 @@ export class VaccineFormComponent extends UtilComponent implements OnInit, OnDes
 
   constructor(
     private vaccineService: VaccineService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     injector: Injector
@@ -134,14 +133,7 @@ export class VaccineFormComponent extends UtilComponent implements OnInit, OnDes
 
   private createVaccineForm(vaccine: Vaccine = new Vaccine()): void {
     this.vaccineForm$.next(
-      this.fb.group({
-        id: [vaccine?.id],
-        title: [vaccine?.title, [Validators.required, Validators.maxLength(60)]],
-        description: [vaccine?.description, [Validators.required, Validators.maxLength(200)]],
-        dosage: [vaccine?.dosage, [Validators.required]],
-        frequency: [vaccine?.frequency, [Validators.required]],
-        interval: [vaccine?.interval, [Validators.required]]
-      })
+      this.buildVaccineForm(vaccine)
     );
   }
 

@@ -17,20 +17,22 @@
             <vac-table-row-cell>{{ user?.gender === 'M' ? 'Masculino' : 'Feminino' }}</vac-table-row-cell>
             <vac-table-row-cell>{{ user?.dateOfBirth | date: 'dd/MM/YYYY' }}</vac-table-row-cell>
             <vac-table-row-cell>
-                <button 
-                    vacButton="icon"
-                    vacButtonIcon="delete"
-                    (click)="onClickDelete(user?.id)" 
-                    type="button"
-                >
-                </button>
-                <button 
-                    vacButton="icon"
-                    vacButtonIcon="edit"
-                    (click)="onClickEdit(user?.id)" 
-                    type="button"
-                >
-                </button>
+                <vac-flex gap="16">
+                    <button 
+                        vacButton="icon"
+                        vacButtonIcon="delete"
+                        (click)="onClickDelete(user?.id)" 
+                        type="button"
+                    >
+                    </button>
+                    <button 
+                        vacButton="icon"
+                        vacButtonIcon="edit"
+                        (click)="onClickEdit(user?.id)" 
+                        type="button"
+                    >
+                    </button>
+                </vac-flex>
             </vac-table-row-cell>
         </vac-table-row>
     </vac-table>

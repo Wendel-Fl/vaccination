@@ -3,18 +3,18 @@
         <h1>
             {{ (newSchedule$ | async) ? 'Nova Agenda' : 'Agenda' }}
         </h1>
-        <vac-flex *ngIf="scheduleDone$ | async as scheduleDone" mainAxis="column" justify="center" gap="32">
+        <vac-flex mainAxis="column" justify="center" gap="32">
             <vac-grid>
                 <vac-form-field class="md-item" *ngIf="users$ | async as users">
                     <vac-form-field-label>Usuário</vac-form-field-label>
-                    <select [disabled]="scheduleDone">
-                        <option *ngFor="let user of users" [value]="user">{{ user?.name }}</option>
+                    <select formControlName="user">
+                        <option *ngFor="let user of users" [value]="user?.id">{{ user?.name }}</option>
                     </select>
                 </vac-form-field>
                 <vac-form-field class="md-item" *ngIf="vaccines$ | async as vaccines">
                     <vac-form-field-label>Vacina</vac-form-field-label>
-                    <select [disabled]="scheduleDone">
-                        <option *ngFor="let vaccine of vaccines" [value]="vaccine">{{ vaccine?.title }}</option>
+                    <select formControlName="vaccination">
+                        <option *ngFor="let vaccine of vaccines" [value]="vaccine?.id">{{ vaccine?.title }}</option>
                     </select>
                 </vac-form-field>
                 <vac-form-field class="big-item">
@@ -22,39 +22,38 @@
                     <input 
                         type="text"
                         placeholder="Observações"
-                        formControlName="note"
-                        [disabled]="scheduleDone"
+                        formControlName="notes"
                     />
-                    <vac-form-field-error *ngIf="scheduleForm?.controls['note']?.touched && scheduleForm?.controls['note'].errors?.['required']">
+                    <vac-form-field-error *ngIf="scheduleForm?.controls['notes']?.touched && scheduleForm?.controls['notes']?.errors?.['required']">
                         Observações é <strong>obrigatório</strong>
                     </vac-form-field-error>
-                    <vac-form-field-error *ngIf="scheduleForm?.controls['note'].errors?.['maxlength']">
+                    <vac-form-field-error *ngIf="scheduleForm?.controls['notes']?.errors?.['maxlength']">
                         Máximo de <strong>200 caracteres</strong>
                     </vac-form-field-error>
                 </vac-form-field>
                 <vac-form-field class="md-item">
                     <vac-form-field-label>Data de Vacinação</vac-form-field-label>
                     <input 
-                        type="date"
+                        type="datetime-local"
                         placeholder="Data de Vacinação"
                         formControlName="dateTime"
-                        [disabled]="scheduleDone"
                     />
                     <vac-form-field-error *ngIf="scheduleForm?.controls['dateTime']?.touched && scheduleForm?.controls['dateTime']?.errors?.['required']">
                         Data de Vacinação é <strong>obrigatório</strong>
                     </vac-form-field-error>
                 </vac-form-field>
-                <span [class]="'schedule status' + scheduleForm?.controls['status']?.value">
-                    {{ scheduleForm?.controls['status']?.value }}
-                </span>
-                <vac-form-field *ngIf="scheduleForm?.controls['statusDate']?.value" class="md-item">
+                <vac-flex justify="center" align="center">
+                    <span [class]="'schedule status ' + scheduleForm?.controls['status']?.value">
+                        {{ getStatusDescription(scheduleForm?.controls['status']?.value) }}
+                    </span>
+                </vac-flex>
+                <vac-form-field *ngIf="scheduleForm?.controls['statusDate']?.value">
                     <vac-form-field-label>Última atualização</vac-form-field-label>
                     <input 
                         type="date"
                         placeholder="Última atualização"
                         formControlName="statusDate"
                         readonly
-                        [disabled]="true"
                     />
                 </vac-form-field>
             </vac-grid>
@@ -64,24 +63,23 @@
                     vacButton="flat-ghost" 
                     (click)="onClickDelete()" 
                     type="button"
-                    *ngIf="!(newSchedule$ | async)"
-                    [disabled]="scheduleDone"
+                    *ngIf="!((newSchedule$ | async) || (scheduleDone$ | async))"
                 >
                     Deletar Agenda
                 </button>
                 <button 
                     vacButton="flat" 
-                    (click)="cancelSchedule()" 
+                    (click)="onClickCancel()" 
                     type="button"
-                    *ngIf="!(newSchedule$ | async) || scheduleDone"
+                    *ngIf="!((newSchedule$ | async) || (scheduleDone$ | async))"
                 >
                     Cancelar Agenda
                 </button>
                 <button 
                     vacButton="flat" 
-                    (click)="concludeSchedule()" 
+                    (click)="onClickCarryOut()" 
                     type="button"
-                    *ngIf="!(newSchedule$ | async) || scheduleDone"
+                    *ngIf="!((newSchedule$ | async) || (scheduleDone$ | async))"
                 >
                     Concluir Agenda
                 </button>
@@ -89,7 +87,7 @@
                     vacButton="flat" 
                     (click)="onSave()" 
                     type="button"
-                    [disabled]="scheduleDone"
+                    *ngIf="!((newSchedule$ | async) || (scheduleDone$ | async))"
                 >
                     Salvar Agenda
                 </button>

@@ -42,7 +42,6 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     private vaccineService: VaccineService,
     private userService: UserService,
     private enumService: EnumService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     injector: Injector
@@ -69,6 +68,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       this.saveSchedule();
     else
       this.toastr.info("Formulário inválido!");
+    console.log(this.scheduleForm)
   }
 
   public onClickDelete(): void {
@@ -80,12 +80,34 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     });
   }
 
-  public concludeSchedule(): void {
-
+  public onClickCancel(): void {
+    if(this.scheduleForm.valid) {
+      this.dialog.open(ConfirmationDialogComponent, {
+        inputs: {
+          text: 'Confirma cancelamento da Agenda?<br> Os dados não poderão ser alterados depois',
+        },
+        onClose: (bool: any) => this.handleCancelConfirmation(bool),
+      });
+    }
+    else
+      this.toastr.info("Formulário inválido")
   }
 
-  public cancelSchedule(): void {
-    
+  public onClickCarryOut(): void {
+    if(this.scheduleForm.valid) {
+      this.dialog.open(ConfirmationDialogComponent, {
+        inputs: {
+          text: 'Confirma realização da Agenda?<br> Os dados não poderão ser alterados depois',
+        },
+        onClose: (bool: any) => this.handleCarryOutConfirmation(bool),
+      });
+    }
+    else
+      this.toastr.info("Formulário inválido")
+  }
+
+  public getStatusDescription(name: string): string {
+    return this.status$.value?.find(status => status?.name === name)?.description ?? 'Não informado';
   }
 
   private get scheduleForm(): FormGroup {
@@ -97,29 +119,40 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       this.deleteSchedule();
   };
 
+  private handleCancelConfirmation = (bool: any): void => {
+    if (bool) 
+      this.cancelSchedule();
+  };
+
+  private handleCarryOutConfirmation = (bool: any): void => {
+    if (bool) 
+      this.carryOutSchedule();
+  };
+
   private saveSchedule(): void {
     this.loading.show();
     const id: number = this.scheduleForm.controls['id'].value;
+    const schedule: Schedule = this.buildScheduleFromFormValue();
     if(id)
-      this.updateSchedule();
+      this.updateSchedule(schedule);
     else
-      this.createSchedule();
+      this.createSchedule(schedule);
   }
 
-  private createSchedule(): void {
-    this.scheduleService.create(this.scheduleForm.value)
+  private createSchedule(schedule: Schedule): void {
+    this.scheduleService.create(schedule)
       .subscribe({
-        next: (schedule: Schedule) => {
-          this.toastr.success("Agenda cadastrada com sucesso!");
+        next: () => {
+          this.toastr.success("Agendas cadastradas com sucesso!");
           this.loading.hide();
-          this.router.navigate([`/schedule/form/${schedule?.id}`]);
+          this.router.navigate(['schedule']);
         },
         error: this.handleError
       })
   }
 
-  private updateSchedule(): void {
-    this.scheduleService.update(this.scheduleForm.value)
+  private updateSchedule(schedule: Schedule): void {
+    this.scheduleService.update(schedule)
     .subscribe({
       next: () => {
         this.toastr.success("Agenda atualizada com sucesso!");
@@ -141,6 +174,30 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       })
   }
 
+  private cancelSchedule(): void {
+    this.scheduleService.cancel(this.buildScheduleFromFormValue())
+      .subscribe({
+        next: (schedule: Schedule) => {
+          this.toastr.success("Agenda cancelada");
+          this.loading.hide();
+          this.router.navigate[`/schedule/form/${schedule?.id}`];
+        },
+        error: this.handleError
+      });
+  }
+
+  private carryOutSchedule(): void {
+    this.scheduleService.carryOut(this.buildScheduleFromFormValue())
+    .subscribe({
+      next: (schedule: Schedule) => {
+        this.toastr.success("Agenda realizada");
+        this.loading.hide();
+        this.router.navigate[`/schedule/form/${schedule?.id}`];
+      },
+      error: this.handleError
+    });
+  }
+
   private handleRetrievedScheduleId(id: string): void {
     if(Number.isNaN(id) || Number(id) === 0){
       this.createScheduleForm();
@@ -157,7 +214,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     this.scheduleService.findById(id)
       .subscribe({
         next: (schedule: Schedule) => {
-          this.scheduleDone$.next(schedule?.done);
+          this.scheduleDone$.next(schedule?.statusDate != null);
           this.createScheduleForm(schedule);
           this.loading.hide();
         },
@@ -166,17 +223,35 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
   }
 
   private createScheduleForm(schedule: Schedule = new Schedule()): void {
-    this.scheduleForm$.next(
-      this.fb.group({
-        id: [schedule?.id],
-        dateTime: [schedule?.dateTime, [Validators.required]],
-        status: [schedule?.status],
-        statusDate: [schedule?.statusDate],
-        note: [schedule?.note, [Validators.required, Validators.maxLength(200)]],
-        user: [schedule?.user, [Validators.required]],
-        vaccination: [schedule?.vaccination, [Validators.required]]
-      })
+    this.scheduleForm$.next(this.buildScheduleForm(schedule));
+  }
+
+  private buildScheduleForm(schedule: Schedule = new Schedule()): FormGroup {
+    const done: boolean = schedule?.statusDate != null;
+    return this.fb.group({
+      id: [schedule?.id],
+      dateTime: [{value: schedule?.dateTime, disabled: done}, [Validators.required]],
+      status: [{value: schedule?.status, disabled: true}],
+      statusDate: [{value: schedule?.statusDate, disabled: true}],
+      notes: [{value: schedule?.notes, disabled: done}, [Validators.required, Validators.maxLength(200)]],
+      user: [{value: schedule?.user?.id, disabled: done}, [Validators.required]],
+      vaccination: [{value: schedule?.vaccination?.id, disabled: done}, [Validators.required]]
+    });
+  }
+
+  private buildScheduleFromFormValue(): Schedule {
+    const formValues = this.scheduleForm.value;
+    const schedule = new Schedule(
+      formValues?.id,
+      formValues?.dateTime,
+      formValues?.status,
+      formValues?.statusDate,
+      formValues?.notes,
+      this.users$.value.find(user => user?.id == formValues?.user),
+      this.vaccines$.value.find(vaccine => vaccine?.id == formValues?.vaccination),
     );
+    console.log(formValues, schedule)
+    return schedule;
   }
 
   private loadData(): void {

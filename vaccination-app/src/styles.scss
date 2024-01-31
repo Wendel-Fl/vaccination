@@ -22,6 +22,7 @@ html, body {
     --gray-lighter: #F8F9FA;
 
     --danger: #ff1d0d;
+    --success: #06d12b;
 }
 
 button.vac-button, a.vac-button {
@@ -112,4 +113,25 @@ div.vac-form-field > input, div.vac-form-field > select {
 form {
     width: 100%;
     height: 100%;
+}
+
+span.schedule.status {
+    width: 160px;
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 0;
+    border-radius: 8px;
+    &.SCHEDULED {
+        background-color: var(--purple-primary);
+    }
+    &.CANCELLED {
+        background-color: var(--danger);
+    }
+    &.CARRIED_OUT {
+        background-color: var(--success);
+    }
 }

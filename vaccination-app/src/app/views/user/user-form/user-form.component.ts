@@ -34,7 +34,6 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
     private userService: UserService,
     private allergyService: AllergyService,
     private enumService: EnumService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     injector: Injector
@@ -157,20 +156,8 @@ export class UserFormComponent extends UtilComponent implements OnInit, OnDestro
 
   private createUserForm(user: User = new User()): void {
     this.userForm$.next(
-      this.fb.group({
-        id: [user?.id],
-        name: [user?.name, [Validators.required, Validators.maxLength(40)]],
-        dateOfBirth: [user?.dateOfBirth, [Validators.required]],
-        gender: [user?.gender, [Validators.required]],
-        publicPlace: [user?.publicPlace, [Validators.required, Validators.maxLength(60)]],
-        number: [user?.number, [Validators.required]],
-        district: [user?.district, [Validators.required, Validators.maxLength(40)]],
-        city: [user?.city, [Validators.required, Validators.maxLength(40)]],
-        state: [user?.state, [Validators.required]],
-        allergies: [this.createAllergiesFormArray(user?.allergies)]
-      })
+      this.buildUserForm(user)
     );
-    console.log(this.allergiesFormArray)
   }
 
   private createAllergiesFormArray(userAllergies: Allergy[] = []): FormArray {
