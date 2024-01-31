@@ -1,7 +1,7 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { UtilComponent } from '../../../core/utils/util.component';
 import { SharedModule } from '../../../shared/shared.module';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { ScheduleService } from '../../../core/services/schedule.service';
 import { ActivatedRoute, ParamMap, Router, RouterModule } from '@angular/router';
@@ -33,7 +33,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
 
   public newSchedule$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
-  public canEdit$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public scheduleDone$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   private readonly SCHEDULE_STATUS: string = 'status';
 
@@ -60,13 +60,13 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     this.users$.unsubscribe();
     this.vaccines$.unsubscribe();
     this.status$.unsubscribe();
-    this.canEdit$.unsubscribe();
+    this.scheduleDone$.unsubscribe();
     this.newSchedule$.unsubscribe();
   }
 
   public onSave(): void {
     if(this.scheduleForm.valid) 
-      this.saveVaccine();
+      this.saveSchedule();
     else
       this.toastr.info("Formulário inválido!");
   }
@@ -80,25 +80,33 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     });
   }
 
+  public concludeSchedule(): void {
+
+  }
+
+  public cancelSchedule(): void {
+    
+  }
+
   private get scheduleForm(): FormGroup {
     return this.scheduleForm$.value;
   }
 
   private handleDeletionConfirmation = (bool: any): void => {
     if (bool) 
-      this.deleteVaccine();
+      this.deleteSchedule();
   };
 
-  private saveVaccine(): void {
+  private saveSchedule(): void {
     this.loading.show();
     const id: number = this.scheduleForm.controls['id'].value;
     if(id)
-      this.updateVaccine();
+      this.updateSchedule();
     else
-      this.createVaccine();
+      this.createSchedule();
   }
 
-  private createVaccine(): void {
+  private createSchedule(): void {
     this.scheduleService.create(this.scheduleForm.value)
       .subscribe({
         next: (schedule: Schedule) => {
@@ -110,7 +118,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
       })
   }
 
-  private updateVaccine(): void {
+  private updateSchedule(): void {
     this.scheduleService.update(this.scheduleForm.value)
     .subscribe({
       next: () => {
@@ -121,7 +129,7 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     })
   }
 
-  private deleteVaccine(): void {
+  private deleteSchedule(): void {
     this.loading.show();
     this.scheduleService.deleteById(this.scheduleForm?.controls['id']?.value)
       .subscribe({
@@ -140,15 +148,16 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
     }
     else {
       this.newSchedule$.next(false);
-      this.findVaccineById(Number(id));
+      this.findScheduleById(Number(id));
     }
   }
 
-  private findVaccineById(id: number): void {
+  private findScheduleById(id: number): void {
     this.loading.show();
     this.scheduleService.findById(id)
       .subscribe({
         next: (schedule: Schedule) => {
+          this.scheduleDone$.next(schedule?.done);
           this.createScheduleForm(schedule);
           this.loading.hide();
         },
@@ -159,7 +168,13 @@ export class ScheduleFormComponent extends UtilComponent implements OnInit, OnDe
   private createScheduleForm(schedule: Schedule = new Schedule()): void {
     this.scheduleForm$.next(
       this.fb.group({
-        
+        id: [schedule?.id],
+        dateTime: [schedule?.dateTime, [Validators.required]],
+        status: [schedule?.status],
+        statusDate: [schedule?.statusDate],
+        note: [schedule?.note, [Validators.required, Validators.maxLength(200)]],
+        user: [schedule?.user, [Validators.required]],
+        vaccination: [schedule?.vaccination, [Validators.required]]
       })
     );
   }

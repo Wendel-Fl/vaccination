@@ -10,6 +10,7 @@ export class Schedule {
     public note: string;
     public user: User;
     public vaccination: Vaccine;
+    public done: boolean;
 
     constructor(
         id: number = null,
@@ -18,7 +19,8 @@ export class Schedule {
         statusDate: string = null,
         note: string = null,
         user: User = null,
-        vaccination: Vaccine = null
+        vaccination: Vaccine = null,
+        done: boolean = null
     ) {
         this.id = id;
         this.dateTime = dateTime;
@@ -27,6 +29,7 @@ export class Schedule {
         this.note = note;
         this.user = user;
         this.vaccination = vaccination;
+        this.done = done;
     }
 
 }

@@ -7,11 +7,12 @@ import { Schedule } from '../../../core/models/schedule.model';
 import { ScheduleService } from '../../../core/services/schedule.service';
 import { EnumService } from '../../../core/services/enum.service';
 import { Enum } from '../../../core/types/enum.type';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-schedule-list',
   standalone: true,
-  imports: [SharedModule, RouterModule],
+  imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule],
   templateUrl: './schedule-list.component.html',
   styleUrl: './schedule-list.component.scss'
 })
@@ -21,11 +22,14 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
 
   public schedulesStatus$: BehaviorSubject<Enum[]> = new BehaviorSubject(null);
 
+  public filterForm$: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
+
   private readonly SCHEDULE_STATUS: string = 'status';
 
   constructor(
     private scheduleService: ScheduleService,
     private enumService: EnumService,
+    private fb: FormBuilder,
     private router: Router,
     injector: Injector
   ) {
@@ -35,6 +39,7 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
   public ngOnInit(): void {
       this.loadScheduleStatus();
       this.loadSchedules();
+      this.createFilterForm();
   }
 
   public ngOnDestroy(): void {
@@ -50,6 +55,28 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
     return this.schedulesStatus$.value?.find(status => status?.name === name)?.description ?? 'Não informado';
   }
 
+  public getTodaySchedules(): void {
+    this.filterForm.reset();
+    this.filterForm.controls['initialDate'].setValue(new Date());
+    this.filterForm.controls['finalDate'].setValue(new Date());
+    this.loadScheduleStatus();
+  }
+
+  public onClearFilter(): void {
+    this.filterForm$.value?.reset();
+  }
+
+  public onApplyFilter(): void {
+    if(this.filterForm.valid)
+      this.loadSchedules();
+    else
+      this.toastr.info("Formulário de pesquisa inválido");
+  }
+
+  private get filterForm(): FormGroup {
+    return this.filterForm$.value;
+  }
+
   private loadScheduleStatus(): void {
     this.enumService.getEnum(this.SCHEDULE_STATUS)
       .subscribe({
@@ -60,7 +87,7 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
 
   private loadSchedules(): void {
     this.loading.show();
-    this.scheduleService.findAll(null)
+    this.scheduleService.findAll(this.filterForm.value)
       .subscribe({
         next: (schedules: Schedule[]) => {
           if(schedules?.length > 0)
@@ -68,7 +95,17 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
           this.loading.hide();
         },
         error: this.handleError
+      });
+  }
+
+  private createFilterForm(): void {
+    this.filterForm$.next(
+      this.fb.group({
+        status: [],
+        initialDate: [],
+        finalDate: []
       })
+    );
   }
 
 }
