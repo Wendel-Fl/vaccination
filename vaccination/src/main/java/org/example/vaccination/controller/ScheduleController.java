@@ -7,14 +7,15 @@ import org.example.vaccination.model.Status;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import org.example.vaccination.service.ScheduleService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,9 +32,16 @@ public class ScheduleController {
 
     @GetMapping(path = "/all")
     public ResponseEntity<List<ScheduleDetailDTO>> getAllSchedules(
-            @RequestParam(name = "status", required = false) Status status,
-            @RequestParam(name = "initialDate", required = false) LocalDateTime initialDate,
-            @RequestParam(name = "finalDate", required = false) LocalDateTime finalDate
+            @RequestParam(name = "status", required = false)
+            Status status,
+
+            @RequestParam(name = "initialDate", required = false)
+            @DateTimeFormat(iso = DATE_TIME)
+            LocalDateTime initialDate,
+
+            @RequestParam(name = "finalDate", required = false)
+            @DateTimeFormat(iso = DATE_TIME)
+            LocalDateTime finalDate
     ) {
         List<ScheduleDetailDTO> schedules = scheduleService.getAllSchedules(status, initialDate, finalDate);
         return ResponseEntity.ok(schedules);
