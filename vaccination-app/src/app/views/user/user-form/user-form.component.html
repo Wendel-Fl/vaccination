@@ -41,14 +41,15 @@
                         Gênero é <strong>obrigatório</strong>
                     </vac-form-field-error>
                 </vac-form-field>
-                <vac-grid class="big-item">
+                <vac-grid class="big-item" *ngIf="allergies$ | async">
+                    <h4 class="big-item">Alergias do usuário:</h4>
                     <ng-container formArrayName="allergies">
-                        <div *ngFor="let allergy of allergiesFormArray?.controls; let i = index" [formGroupName]="i">
+                        <vac-flex *ngFor="let allergy of allergies$ | async; let i = index" justify="flex-start" align="center" gap="12">
                             <label>
-                                {{ allergy?.get('name')?.value }}
+                                {{ allergy?.name }}
                             </label>
-                            <input type="checkbox" [formControl]="getFormControl(allergy?.get('selected'))" />
-                        </div>
+                            <input type="checkbox" [formControlName]="i" />
+                        </vac-flex>
                     </ng-container>
                 </vac-grid>
                 <vac-form-field class="md-item">

@@ -33,12 +33,6 @@ export class UtilComponent {
         });
     }
 
-    protected buildAllergyFormArray(allergies: Allergy[] = []): FormArray {
-        return this.fb.array(
-            allergies?.map(allergy => this.buildAllergyForm(allergy))
-        );
-    }
-
     protected buildUserForm(user: User = new User()): FormGroup {
         return this.fb.group({
             id: [user?.id],
@@ -49,8 +43,7 @@ export class UtilComponent {
             number: [user?.number, [Validators.required]],
             district: [user?.district, [Validators.required, Validators.maxLength(40)]],
             city: [user?.city, [Validators.required, Validators.maxLength(40)]],
-            state: [user?.state, [Validators.required]],
-            allergies: [this.buildAllergyFormArray(user?.allergies)]
+            state: [user?.state, [Validators.required]]
         });
     }
 
