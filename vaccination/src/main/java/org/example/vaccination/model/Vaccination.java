@@ -42,8 +42,7 @@ public class Vaccination {
 
     @OneToMany(
             mappedBy = "vaccination",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            fetch = FetchType.LAZY
     )
     @JsonManagedReference(value = "schedule-vaccination")
     @JsonIgnore
