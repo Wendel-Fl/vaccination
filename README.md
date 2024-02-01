@@ -23,7 +23,7 @@ Node.js (versão 17 ou superior) - Download Node.js https://nodejs.org/en/downlo
 - Certifique-se de ter o Node.js instalado. Abra o Prompt de Comando e execute node --version. Caso não, realize a instalação no link acima.
 - Instale o Angular CLI e o TypeScript. Execute os comando `npm install -g @angular/cli typescript tsc`
 - Abra o terminal na pasta do projeto Angular
-- Execute o comando npm install para instalar as dependências
+- Execute o comando `npm install` para instalar as dependências
 - Em seguida, execute `npm run start` para iniciar o servidor de desenvolvimento
 - Acesse a aplicação no navegador através de http://localhost:4200.
 
