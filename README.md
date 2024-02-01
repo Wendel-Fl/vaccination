@@ -4,10 +4,12 @@
 
 O Vac App é um sistema que possibilita o cadastro de Alergias, Usuários e Vacinas. Além disso, oferece funcionalidades para agendamento de vacinação para usuários.
 
+##
 ### Ecossistema
 
 O Sistema foi desenvolvido utilizando Angular e Spring Boot. Os dados são armazenados em um banco de dados PostgreSQL. Em seguida, as tecnologias serão melhor descritas.
 
+##
 ### Angular
 
 <b>O que é o Angular?</b>
@@ -27,6 +29,7 @@ Node.js (versão 17 ou superior) - Download Node.js https://nodejs.org/en/downlo
 - Em seguida, execute `npm run start` para iniciar o servidor de desenvolvimento
 - Acesse a aplicação no navegador através de http://localhost:4200.
 
+##
 ### Banco de Dados PostgreSQL
 
 É necessário, para execução da aplicação Spring Boot a criação de um banco de dados local PostgreSQL.
@@ -47,7 +50,7 @@ Uma opção é utilizar uma IDE como o IntelliJ, esta facilita a execução de a
 
 <b>Execução da Aplicação Spring Boot</b>
 
-- Acesse a pasta da aplicação e procure o arquivo `application.yml` no diretório `./src/main/resources/application.yml`
+- Acesse a pasta da aplicação e procure o arquivo `application.yml` no diretório `./src/main/resources/application.yml` e altere as credenciais de acordo com o banco de dados criado
 - Certifique-se de ter o Java JDK instalado
 - Abra o terminal na pasta do projeto Spring Boot
 - Execute o comando ./mvnw spring-boot:run para iniciar a aplicação
