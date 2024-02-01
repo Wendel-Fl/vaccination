@@ -81,13 +81,13 @@ div.vac-form-field > input, div.vac-form-field > select {
     padding: 8px 16px;
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--gray-light);
+    color: var(--gray-dark);
     outline: 0;
     border: 2px solid var(--gray-light);
     border-radius: 8px;
     transition: 0.2s all linear;
     &:hover {
-        color: var(--gray-lighter);
+        color: var(--gray-light);
         border: 2px solid var(--purple-quaternary);
         transition: 0.2s all linear;
     }
