@@ -67,6 +67,7 @@ export class ScheduleListComponent extends UtilComponent implements OnInit, OnDe
 
   public onClearFilter(): void {
     this.filterForm$.value?.reset();
+    this.loadSchedules();
   }
 
   public onApplyFilter(): void {
