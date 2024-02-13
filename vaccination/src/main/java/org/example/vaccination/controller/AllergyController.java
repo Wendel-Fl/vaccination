@@ -6,6 +6,9 @@ import org.example.vaccination.model.Allergy;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
 import org.example.vaccination.service.AllergyService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,10 @@ public class AllergyController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<AllergyDetailDTO>> getAllAllergies() {
-        List<AllergyDetailDTO> allergies = allergyService.getAllAllergies();
+    public ResponseEntity<Page<AllergyDetailDTO>> getAllAllergies(
+            @PageableDefault(sort = {"id"}) Pageable pageable
+    ) {
+        Page<AllergyDetailDTO> allergies = allergyService.getAllAllergies(pageable);
         return ResponseEntity.ok(allergies);
     }
 

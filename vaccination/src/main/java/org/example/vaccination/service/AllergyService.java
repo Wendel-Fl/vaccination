@@ -6,6 +6,8 @@ import org.example.vaccination.model.Allergy;
 import org.example.vaccination.model.dto.AllergyDTO;
 import org.example.vaccination.model.dto.AllergyDetailDTO;
 import org.example.vaccination.repository.AllergyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +30,10 @@ public class AllergyService {
         return allergyRepository.getReferenceById(id);
     }
 
-    public List<AllergyDetailDTO> getAllAllergies() {
+    public Page<AllergyDetailDTO> getAllAllergies(Pageable pageable) {
         return allergyRepository
-                .findAll()
-                .stream()
-                .map(AllergyDetailDTO::new)
-                .toList();
+                .findAll(pageable)
+                .map(AllergyDetailDTO::new);
     }
 
     public Allergy createAllergy(AllergyDTO allergyDTO) {

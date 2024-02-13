@@ -6,6 +6,9 @@ import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 import org.example.vaccination.service.VaccinationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,10 @@ public class VaccinationController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<VaccinationDetailDTO>> getAllVaccines() {
-        List<VaccinationDetailDTO> vaccines = vaccinationService.getAllVaccines();
+    public ResponseEntity<Page<VaccinationDetailDTO>> getAllVaccines(
+            @PageableDefault(sort = {"id"}) Pageable pageable
+    ) {
+        Page<VaccinationDetailDTO> vaccines = vaccinationService.getAllVaccines(pageable);
         return ResponseEntity.ok(vaccines);
     }
 
