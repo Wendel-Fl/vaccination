@@ -7,6 +7,8 @@ import org.example.vaccination.model.Status;
 import org.example.vaccination.model.dto.ScheduleDTO;
 import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import org.example.vaccination.service.ScheduleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,9 @@ public class ScheduleController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<ScheduleDetailDTO>> getAllSchedules(
+    public ResponseEntity<Page<ScheduleDetailDTO>> getAllSchedules(
+            Pageable pageable,
+
             @RequestParam(name = "status", required = false)
             Status status,
 
@@ -43,7 +47,9 @@ public class ScheduleController {
             @DateTimeFormat(iso = DATE_TIME)
             LocalDateTime finalDate
     ) {
-        List<ScheduleDetailDTO> schedules = scheduleService.getAllSchedules(status, initialDate, finalDate);
+        Page<ScheduleDetailDTO> schedules = scheduleService
+                .getAllSchedules(pageable, status, initialDate, finalDate);
+
         return ResponseEntity.ok(schedules);
     }
 

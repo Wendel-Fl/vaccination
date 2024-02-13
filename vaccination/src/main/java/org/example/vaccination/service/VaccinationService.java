@@ -6,6 +6,8 @@ import org.example.vaccination.model.Vaccination;
 import org.example.vaccination.model.dto.VaccinationDTO;
 import org.example.vaccination.model.dto.VaccinationDetailDTO;
 import org.example.vaccination.repository.VaccinationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +30,10 @@ public class VaccinationService {
         return vaccinationRepository.getReferenceById(id);
     }
 
-    public List<VaccinationDetailDTO> getAllVaccines() {
+    public Page<VaccinationDetailDTO> getAllVaccines(Pageable pageable) {
         return vaccinationRepository
-                .findAll()
-                .stream()
-                .map(VaccinationDetailDTO::new)
-                .toList();
+                .findAll(pageable)
+                .map(VaccinationDetailDTO::new);
     }
 
     public Vaccination createVaccine(VaccinationDTO vaccinationDTO) {

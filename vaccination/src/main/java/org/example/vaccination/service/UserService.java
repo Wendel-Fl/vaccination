@@ -10,6 +10,8 @@ import org.example.vaccination.model.dto.UserDetailDTO;
 import org.example.vaccination.repository.AllergyRepository;
 import org.example.vaccination.repository.ScheduleRepository;
 import org.example.vaccination.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,12 +42,10 @@ public class UserService {
         return userRepository.getReferenceById(id);
     }
 
-    public List<UserDetailDTO> getAllUsers() {
+    public Page<UserDetailDTO> getAllUsers(Pageable pageable) {
         return userRepository
-                .findAll()
-                .stream()
-                .map(UserDetailDTO::new)
-                .toList();
+                .findAll(pageable)
+                .map(UserDetailDTO::new);
     }
 
     public User createUser(UserDTO userDTO) {

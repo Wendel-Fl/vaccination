@@ -10,6 +10,8 @@ import org.example.vaccination.model.dto.ScheduleDetailDTO;
 import org.example.vaccination.repository.ScheduleRepository;
 import org.example.vaccination.repository.UserRepository;
 import org.example.vaccination.repository.VaccinationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -47,14 +49,15 @@ public class ScheduleService {
         return scheduleRepository.getReferenceById(id);
     }
 
-    public List<ScheduleDetailDTO> getAllSchedules(
-            Status status, LocalDateTime initialDate, LocalDateTime finalDate
+    public Page<ScheduleDetailDTO> getAllSchedules(
+            Pageable pageable,
+            Status status,
+            LocalDateTime initialDate,
+            LocalDateTime finalDate
     ) {
         return scheduleRepository
-                .filterSchedule(status, initialDate, finalDate)
-                .stream()
-                .map(ScheduleDetailDTO::new)
-                .toList();
+                .filterSchedule(pageable, status, initialDate, finalDate)
+                .map(ScheduleDetailDTO::new);
     }
 
     public List<Schedule> createSchedule(ScheduleDTO scheduleDTO) {

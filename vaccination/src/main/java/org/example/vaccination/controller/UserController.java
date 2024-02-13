@@ -6,6 +6,9 @@ import org.example.vaccination.model.User;
 import org.example.vaccination.model.dto.UserDTO;
 import org.example.vaccination.model.dto.UserDetailDTO;
 import org.example.vaccination.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,10 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<UserDetailDTO>> getAllUsers() {
-        List<UserDetailDTO> users = userService.getAllUsers();
+    public ResponseEntity<Page<UserDetailDTO>> getAllUsers(
+            @PageableDefault(sort = {"id"}) Pageable pageable
+    ) {
+        Page<UserDetailDTO> users = userService.getAllUsers(pageable);
         return ResponseEntity.ok(users);
     }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.vaccination.model.Schedule;
 import org.example.vaccination.model.Status;
 import org.hibernate.annotations.Filter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,7 +32,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "   ELSE 4 END) " +
             "ASC"
     )
-    List<Schedule> filterSchedule(
+    Page<Schedule> filterSchedule(
+            Pageable pageable,
             @Param("status") Status status,
             @Param("initialDate") LocalDateTime initialDate,
             @Param("finalDate") LocalDateTime finalDate
