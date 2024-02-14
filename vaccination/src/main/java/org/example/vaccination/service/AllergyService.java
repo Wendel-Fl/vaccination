@@ -30,9 +30,9 @@ public class AllergyService {
         return allergyRepository.getReferenceById(id);
     }
 
-    public Page<AllergyDetailDTO> getAllAllergies(Pageable pageable) {
+    public Page<AllergyDetailDTO> getAllAllergies(Pageable pageable, String name) {
         return allergyRepository
-                .findAll(pageable)
+                .filterAllergy(pageable, name)
                 .map(AllergyDetailDTO::new);
     }
 
