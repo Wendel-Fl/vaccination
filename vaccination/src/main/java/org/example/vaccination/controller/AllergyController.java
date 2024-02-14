@@ -31,9 +31,10 @@ public class AllergyController {
 
     @GetMapping(path = "/all")
     public ResponseEntity<Page<AllergyDetailDTO>> getAllAllergies(
-            @PageableDefault(sort = {"id"}) Pageable pageable
+            @PageableDefault(sort = {"id"}) Pageable pageable,
+            @RequestParam(name = "name", required = false) String name
     ) {
-        Page<AllergyDetailDTO> allergies = allergyService.getAllAllergies(pageable);
+        Page<AllergyDetailDTO> allergies = allergyService.getAllAllergies(pageable, name);
         return ResponseEntity.ok(allergies);
     }
 
