@@ -30,9 +30,23 @@ public class VaccinationService {
         return vaccinationRepository.getReferenceById(id);
     }
 
-    public Page<VaccinationDetailDTO> getAllVaccines(Pageable pageable) {
+    public Page<VaccinationDetailDTO> getAllVaccines(
+            Pageable pageable,
+            String title,
+            String description,
+            Integer dosage,
+            Integer frequency,
+            Integer interval
+    ) {
         return vaccinationRepository
-                .findAll(pageable)
+                .filterVaccination(
+                        pageable,
+                        title,
+                        description,
+                        dosage,
+                        frequency,
+                        interval
+                )
                 .map(VaccinationDetailDTO::new);
     }
 
