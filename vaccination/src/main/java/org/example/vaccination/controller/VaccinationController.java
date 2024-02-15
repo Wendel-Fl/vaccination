@@ -31,9 +31,22 @@ public class VaccinationController {
 
     @GetMapping(path = "/all")
     public ResponseEntity<Page<VaccinationDetailDTO>> getAllVaccines(
-            @PageableDefault(sort = {"id"}) Pageable pageable
+            @PageableDefault(sort = {"id"}) Pageable pageable,
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "description", required = false) String description,
+            @RequestParam(name = "dosage", required = false) Integer dosage,
+            @RequestParam(name = "frequency", required = false) Integer frequency,
+            @RequestParam(name = "interval", required = false) Integer interval
     ) {
-        Page<VaccinationDetailDTO> vaccines = vaccinationService.getAllVaccines(pageable);
+        Page<VaccinationDetailDTO> vaccines = vaccinationService
+                .getAllVaccines(
+                        pageable,
+                        title,
+                        description,
+                        dosage,
+                        frequency,
+                        interval
+                );
         return ResponseEntity.ok(vaccines);
     }
 
