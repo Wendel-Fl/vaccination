@@ -11,7 +11,7 @@ public interface AllergyRepository extends JpaRepository<Allergy, Long> {
 
     @Query(
             "FROM Allergy al " +
-            "WHERE (:name IS NULL OR LOWER(al.name) LIKE LOWER(CONCAT('%', :name, '%'))) "
+            "WHERE (:name IS NULL OR :name = '' OR LOWER(al.name) LIKE LOWER(CONCAT('%', :name, '%'))) "
     )
     Page<Allergy> filterAllergy(
             Pageable pageable,
